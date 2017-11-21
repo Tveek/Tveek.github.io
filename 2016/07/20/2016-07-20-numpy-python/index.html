@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="numpy的基本学习"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/07/20/2016-07-20-numpy-python/"/>
+
+
+<meta name="description" content="做数据处理的工作,Matlab无疑是最好的,但是matlab的是小众语言,实际项目中运用的很少,很多科学家和工程师做数据处理都使用python,因为python有很多关于科学计算的模块.这里介绍一下numpy.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy的基本学习">
+<meta property="og:url" content="http://yoursite.com/2016/07/20/2016-07-20-numpy-python/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="做数据处理的工作,Matlab无疑是最好的,但是matlab的是小众语言,实际项目中运用的很少,很多科学家和工程师做数据处理都使用python,因为python有很多关于科学计算的模块.这里介绍一下numpy.">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="numpy的基本学习">
+<meta name="twitter:description" content="做数据处理的工作,Matlab无疑是最好的,但是matlab的是小众语言,实际项目中运用的很少,很多科学家和工程师做数据处理都使用python,因为python有很多关于科学计算的模块.这里介绍一下numpy.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> numpy的基本学习 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          numpy的基本学习
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Jul 20, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#个人实践"><span class="toc-text">个人实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#推荐"><span class="toc-text">推荐</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>做数据处理的工作,Matlab无疑是最好的,但是matlab的是小众语言,实际项目中运用的很少,很多科学家和工程师做数据处理都使用python,因为python有很多关于科学计算的模块.这里介绍一下numpy.</p>
+<a id="more"></a>
+
+
+
+<h1 id="个人实践">个人实践</h1>
+<p>最近做数据处理的事,由于Linux中matlab安装比较麻烦以及python更加流行,决定使用python和numpy来进行数据处理.接下来记录一些个人心得.<br> <strong>第一</strong>,数据处理往往是一大堆数据,因此会涉及到数据的读取和保存,也就是IO处理.这里简单写几行代码来说明numpy中如何读取和保存txt文件 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="comment"># 读取</span></div><div class="line">result=np.loadtxt(<span class="string">'axis2_sample_point.txt'</span>)</div><div class="line"><span class="comment"># 保存,\r\n windows的换行符</span></div><div class="line"><span class="keyword">with</span> open(<span class="string">'result.txt'</span>,<span class="string">'a'</span>) <span class="keyword">as</span> file:</div><div class="line">	write_str = <span class="string">'%f %f %f %f\r\n\r\n'</span>%	(params[<span class="number">1</span>],params[<span class="number">2</span>],params[<span class="number">3</span>],params[<span class="number">0</span>])</div><div class="line">    file.write(write_str)</div></pre></td></tr></table></figure></p>
+<p><strong>第二</strong>,那就是数据的矩阵处理了.首先必须知道numpy如何初始化一个数组 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,,<span class="number">8</span>,<span class="number">9</span>]])</div></pre></td></tr></table></figure></p>
+<p>这里我想说的是numpy的数组和C++中的数组可不一样,首先,它可以是一维的,二维的(上面的代码就是二维的),甚至多维的.可以根据中括号的层数来判断.其次,要知道数组的shape,通过变量名.shape可以获得.<br></p>
+<p><strong>第三</strong>,就是一些常见的方法.<br> 1,初始化全为1或0的数组 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="comment"># 初始化0数组</span></div><div class="line">a=np.zeros((<span class="number">3</span>,<span class="number">1</span>))</div><div class="line"><span class="comment"># 初始化1数组</span></div><div class="line">b=np.ones((<span class="number">3</span>,<span class="number">3</span>))</div></pre></td></tr></table></figure></p>
+<p>2,数组切片 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>]])</div><div class="line"><span class="comment"># 取数组每一行,但只取其第一列</span></div><div class="line">b=a[:,<span class="number">0</span>:<span class="number">1</span>]</div><div class="line"><span class="comment"># 取数组的每一列,但只取第二行到最后一行</span></div><div class="line">c=a[<span class="number">1</span>:,:]</div></pre></td></tr></table></figure></p>
+<p>3,数组重新组合 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]])</div><div class="line">b=np.array([[<span class="number">4</span>],[<span class="number">5</span>],[<span class="number">6</span>]])</div><div class="line"><span class="comment"># 数组水平方向合并</span></div><div class="line">c=np.hstack((a,b))</div><div class="line"><span class="comment"># 数组垂直方向合并</span></div><div class="line">d=np.vstack((a,b))</div></pre></td></tr></table></figure></p>
+<p><strong>第四</strong>,区分numpy和python数据 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="comment"># python数据</span></div><div class="line">a=[[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</div><div class="line"><span class="comment"># numpy数据</span></div><div class="line">b=np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</div></pre></td></tr></table></figure></p>
+<p><strong>第五</strong>,会使用help方法查看各个函数功能 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import numpy as np</div><div class="line">help(np.vstack)</div></pre></td></tr></table></figure></p>
+<h1 id="推荐">推荐</h1>
+<p>上面写的都是个人的一些初步使用心得,不够全面,下面推荐两个比较好的网址,以便日后学习和翻阅<br> <a href="http://blog.csdn.net/blog_empire/article/details/39298557" target="_blank" rel="external">NumPy基本方法</a><br> <a href="http://old.sebug.net/paper/books/scipydoc/numpy_intro.html" target="_blank" rel="external">NumPy-快速处理数据</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/07/19/2016-07-19-svd-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SVD求解超定方程</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/07/23/2016-07-23-ml-matrix/">
+        <span class="next-text nav-default">矩阵导数运算</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/20/2016-07-20-numpy-python/"
+           data-title="numpy的基本学习" data-url="http://yoursite.com/2016/07/20/2016-07-20-numpy-python/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

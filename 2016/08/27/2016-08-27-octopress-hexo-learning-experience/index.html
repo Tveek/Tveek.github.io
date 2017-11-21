@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Octopress迁移到Hexo"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/27/2016-08-27-octopress-hexo-learning-experience/"/>
+
+
+<meta name="description" content="最近一个比较好的博客系统Hexo,它的各种好处我就不一一介绍了.我主要是想说一下从octopress迁移到hexo的心得体会.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Octopress迁移到Hexo">
+<meta property="og:url" content="http://yoursite.com/2016/08/27/2016-08-27-octopress-hexo-learning-experience/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="最近一个比较好的博客系统Hexo,它的各种好处我就不一一介绍了.我主要是想说一下从octopress迁移到hexo的心得体会.">
+<meta property="og:updated_time" content="2016-08-29T12:24:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Octopress迁移到Hexo">
+<meta name="twitter:description" content="最近一个比较好的博客系统Hexo,它的各种好处我就不一一介绍了.我主要是想说一下从octopress迁移到hexo的心得体会.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> Octopress迁移到Hexo · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Octopress迁移到Hexo
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 27, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo安装"><span class="toc-text">Hexo安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装git"><span class="toc-text">安装git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nodejs"><span class="toc-text">安装nodejs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nodejs包管理器npm"><span class="toc-text">安装nodejs包管理器npm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装hexo"><span class="toc-text">安装hexo</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#博客系统"><span class="toc-text">博客系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试hexo"><span class="toc-text">测试hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装主题"><span class="toc-text">安装主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#迁移"><span class="toc-text">迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#文章迁移"><span class="toc-text">文章迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三方服务迁移"><span class="toc-text">第三方服务迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-部署"><span class="toc-text">github 部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github发布"><span class="toc-text">github发布</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mathjax问题"><span class="toc-text">mathjax问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装pandoc"><span class="toc-text">安装pandoc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装hexo-renderer-pandoc"><span class="toc-text">安装hexo-renderer-pandoc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置mathjax"><span class="toc-text">配置mathjax</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>最近一个比较好的博客系统Hexo,它的各种好处我就不一一介绍了.我主要是想说一下从octopress迁移到hexo的心得体会. <a id="more"></a></p>
+<h1 id="hexo安装">Hexo安装</h1>
+<p>其实网上的资料很多，而且是中文的．因为hexo是一个台湾学生开发的.这里就讲一个大概吧.</p>
+<h2 id="安装git">安装git</h2>
+<p>我的是ubuntu14.04，git是默认已经安装了的．如果是windows系统，那就不要忘记安装它哦，这里不做过多说明，自行google吧.</p>
+<h2 id="安装nodejs">安装nodejs</h2>
+<p>去<a href="https://nodejs.org/en/download/package-manager/#arch-linux" target="_blank" rel="external">nodejs Linux apt安装方式</a> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -</div><div class="line">sudo apt-get install -y nodejs</div></pre></td></tr></table></figure></p>
+<p>之后使用如下命令，查看是否安装成功: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nodejs -v</div></pre></td></tr></table></figure></p>
+<h2 id="安装nodejs包管理器npm">安装nodejs包管理器npm</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone http://github.com/isaacs/npm.git</div><div class="line">cd npm</div><div class="line">sudo make install</div></pre></td></tr></table></figure>
+
+<h2 id="安装hexo">安装hexo</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div></pre></td></tr></table></figure>
+
+<h1 id="博客系统">博客系统</h1>
+<h2 id="初始化">初始化</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init folder</div><div class="line">cd folder</div><div class="line">npm install</div></pre></td></tr></table></figure>
+
+<p>folder是你想把你的博客系统放在哪个<strong>文件夹</strong>的名字 推荐直接看这个网站:<a href="https://hexo.io/zh-cn/docs/setup.html" target="_blank" rel="external">hexo的初始化</a></p>
+<h2 id="测试hexo">测试hexo</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo generate #生成静态文件。</div><div class="line">hexo server #生成本地服务器，端口默认4000启动，</div></pre></td></tr></table></figure>
+
+<p>打开浏览器，在地址栏输入:http://localhost:4000/.有网页出来就成功了.</p>
+<h2 id="安装主题">安装主题</h2>
+<p>我使用的是Next主题,这里直接推荐<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">Next官网文档</a></p>
+<h1 id="迁移">迁移</h1>
+<h2 id="文章迁移">文章迁移</h2>
+<p>文章迁移起来还是很方便，把以前 Octopress 的 source/_post 目录下的文章，拷贝到 Hexo 的同名目录下即可,<strong>但需要删除文章中生成文章目录(TOC)的部分，因为hexo默认自动生成</strong>。</p>
+<h2 id="第三方服务迁移">第三方服务迁移</h2>
+<p>我使用的Next主题，我直接安装Next官网文档重新设置了一下.</p>
+<h2 id="github-部署">github 部署</h2>
+<p>前期<strong>创建github账号,配置SSH</strong>,以及创建项目名为<strong>github用户名.github.io</strong>的项目,这里推荐<a href="http://www.jianshu.com/p/05289a4bc8b2" target="_blank" rel="external">Github Pages与Hexo教程</a>. 我主要将一下hexo根目录下的_config.yml文件的配置 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: github</div><div class="line">  repository: git@github.com:你的帐号/你的帐号.github.com.git</div><div class="line">  例如我的：repository: git@github.com:tveek/tveek.github.com.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
+<h2 id="github发布">github发布</h2>
+<p>第一次可能部署 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">npm install hexo-deployer-git --save(一个插件)</div><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<p>之后 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<p>这样就可以把你的博客部署到你的github上了.</p>
+<h1 id="mathjax问题">mathjax问题</h1>
+<p>这是hexo的老大难问题，虽然hexo 支持mathjax，但是不完美，有各种特殊字符转义的问题．下面介绍一个方法，几乎完美解决该问题.</p>
+<h2 id="安装pandoc">安装pandoc</h2>
+<p>ubuntu下，直接在软件中心下载安装</p>
+<h2 id="安装hexo-renderer-pandoc">安装hexo-renderer-pandoc</h2>
+<p>在hexo根目录 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-renderer-pandoc --save</div></pre></td></tr></table></figure></p>
+<h2 id="配置mathjax">配置mathjax</h2>
+<p>在theme_folder/layout/_partial/创建文件<strong>mathjax.swig</strong>文件,并写入如下代码 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!-- mathjax config similar to math.stackexchange --&gt;</div><div class="line">&lt;script type="text/x-mathjax-config"&gt;</div><div class="line">  MathJax.Hub.Config(&#123;</div><div class="line">    tex2jax: &#123;</div><div class="line">      inlineMath: [ ['$','$'], ["\\(","\\)"] ],</div><div class="line">      processEscapes: true</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;script type=<span class="string">"text/x-mathjax-config"</span>&gt;</div><div class="line">    MathJax.Hub.Config(&#123;</div><div class="line">      <span class="attr">tex2jax</span>: &#123;</div><div class="line">        <span class="attr">skipTags</span>: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;script type=<span class="string">"text/x-mathjax-config"</span>&gt;</div><div class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> all = MathJax.Hub.getAllJax(), i;</div><div class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>; i &lt; all.length; i += <span class="number">1</span>) &#123;</div><div class="line">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span>&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
+<p><strong>注意</strong>,我的next是５.0.1，其他版本文件的后缀(.swig)可能不一样. 还有是，在latex公式中连续出现两个<strong>{</strong>,hexo也无法生成，解决办法是<strong>在两个{之间输入空格</strong>,这应该是hexo的bug.</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/22/2016-08-22-feeling-python/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Python 学习感悟</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/28/2016-08-28-cppcompile-cpp/">
+        <span class="next-text nav-default">理解C++的编译过程</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/27/2016-08-27-octopress-hexo-learning-experience/"
+           data-title="Octopress迁移到Hexo" data-url="http://yoursite.com/2016/08/27/2016-08-27-octopress-hexo-learning-experience/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

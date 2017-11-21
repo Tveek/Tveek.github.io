@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="C++错误学习之类和对象"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/29/2016-08-29-errorstudy1-cpp/"/>
+
+
+<meta name="description" content="隔了一段时间没写C++代码了，今天凭直觉写了一段代码，结果出了很奇怪的错误，看来基础不够扎实啊！">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++错误学习之类和对象">
+<meta property="og:url" content="http://yoursite.com/2016/08/29/2016-08-29-errorstudy1-cpp/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="隔了一段时间没写C++代码了，今天凭直觉写了一段代码，结果出了很奇怪的错误，看来基础不够扎实啊！">
+<meta property="og:updated_time" content="2016-09-01T14:16:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++错误学习之类和对象">
+<meta name="twitter:description" content="隔了一段时间没写C++代码了，今天凭直觉写了一段代码，结果出了很奇怪的错误，看来基础不够扎实啊！">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> C++错误学习之类和对象 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          C++错误学习之类和对象
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 29, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#code"><span class="toc-text">Code</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#error"><span class="toc-text">Error</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#analysis"><span class="toc-text">Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#summary"><span class="toc-text">Summary</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>隔了一段时间没写C++代码了，今天凭直觉写了一段代码，结果出了很奇怪的错误，看来基础不够扎实啊！ <a id="more"></a></p>
+<h1 id="code">Code</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> A</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//错误一</span></div><div class="line">A::f()</div><div class="line">&#123;</div><div class="line">	i=<span class="number">20</span>;</div><div class="line">    <span class="comment">//错误二</span></div><div class="line">	<span class="built_in">cout</span>&lt;&lt;A.i&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	A a;</div><div class="line">	A b;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;a.i&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	a.f();</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">123</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	b.f();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<h1 id="error">Error</h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">a.cpp:10:6: error: ISO C++ forbids declaration of ‘f’ with no type [-fpermissive]</div><div class="line"> A::f()</div><div class="line">      ^</div><div class="line">a.cpp:10:1: error: prototype for ‘int A::f()’ does not match any in class ‘A’</div><div class="line"> A::f()</div><div class="line"> ^</div><div class="line">a.cpp:8:7: error: candidate is: void A::f()</div><div class="line">  void f();</div><div class="line">       ^</div></pre></td></tr></table></figure>
+
+<h1 id="analysis">Analysis</h1>
+<p>第一条错误提示：C++禁止没有类型声明的函数<strong>f</strong>,指的是A::f()<br> 第二条错误提示: 在类A中没有<strong>int A::f()</strong>函数的原型<br> 第三条错误提示: 可能的候选原型是<strong>void A::f()</strong><br> 首先，说一下，当时为什么会写出这样的代码，其实都是一个原因:<strong>误把类当成对象</strong><br> 当时自己的思维模式具体是这样的:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A</div><div class="line">&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>认为上面的代码<strong>definition(定义)</strong>了一个类，其实只是<strong>declaration(声明)</strong>了一个类. 但是好像<strong>f()</strong>函数又没有具体的函数体，因此有: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">A::f()</div><div class="line">&#123;</div><div class="line">....</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其实只有在函数前加<strong>void</strong>就可以解决<strong>错误一</strong>,因为我们这里是在定义一个函数.<br> 接着使用<strong>i</strong>，把A当成<strong>对象</strong>．因此有: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A.i</div></pre></td></tr></table></figure></p>
+<p>其实是可以直接使用i或A::i来替换A.i就可以解决<strong>错误二</strong></p>
+<h1 id="summary">Summary</h1>
+<p>第一：写程序一定要有严格的思维模式<br> 第二：分清楚类的声明和定义<br> 第三：分清楚类和对象的区别(<strong>这儿有很多区别,以后碰到了再说</strong>)<br> 第四：类使用 <strong>::</strong> 获取成员；对象使用 <strong>.</strong> 获取成员</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/28/2016-08-28-cppcompile-cpp/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">理解C++的编译过程</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/31/2016-08-31-errorstudy2-cpp/">
+        <span class="next-text nav-default">C++错误学习之继承重载</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/29/2016-08-29-errorstudy1-cpp/"
+           data-title="C++错误学习之类和对象" data-url="http://yoursite.com/2016/08/29/2016-08-29-errorstudy1-cpp/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

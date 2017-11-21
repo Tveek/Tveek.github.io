@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="矩阵导数运算"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/07/23/2016-07-23-ml-matrix/"/>
+
+
+<meta name="description" content="机器学习我觉得就是数理统计和线性代数,由于都是求最值的问题,必然涉及导数.不过矩阵,向量,标量求导可大有学问. $ $">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="矩阵导数运算">
+<meta property="og:url" content="http://yoursite.com/2016/07/23/2016-07-23-ml-matrix/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="机器学习我觉得就是数理统计和线性代数,由于都是求最值的问题,必然涉及导数.不过矩阵,向量,标量求导可大有学问. $ $">
+<meta property="og:updated_time" content="2017-04-17T05:06:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="矩阵导数运算">
+<meta name="twitter:description" content="机器学习我觉得就是数理统计和线性代数,由于都是求最值的问题,必然涉及导数.不过矩阵,向量,标量求导可大有学问. $ $">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 矩阵导数运算 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          矩阵导数运算
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Jul 23, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#推荐"><span class="toc-text">推荐</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>机器学习我觉得就是数理统计和线性代数,由于都是求最值的问题,必然涉及导数.不过矩阵,向量,标量求导可大有学问. $ $ <a id="more"></a></p>
+<h1 id="原因">原因</h1>
+<p>虽然本篇主要是想记录矩阵导数运算,不过我还是想说出为什么要记录矩阵导数的原因.下面列出Locally Weighted Linear Regression(局部加权线性回归)的公式:<br></p>
+<p><span class="math">\[
+J(\theta)=\mathop{\min}\limits_{\theta }\sum_{j=1}^{m}\omega ^{j}[h_{\theta}(x^{j})-y^{j}]^{2}
+\]</span></p>
+<p><strong>第一个问题是上面的公式我们怎么写成矩阵的型式?</strong><br> 我们都知道一个列向量的转置乘以该列向量可以代表列向量各个元素的<strong>平方和</strong>,但是这里有一个<span class="math">\(\omega^{j}\)</span>,我们知道这个公式表达的意思是<strong>列向量的各个元素的平方乘以一个系数,然后将它们加起来</strong><br> <strong>第二个问题就是我们怎么把<span class="math">\(\omega\)</span>表示成矩阵的型式</strong><br> 首先写出结果:<br></p>
+<p><span class="math">\[
+J(\theta)=\frac{1}{2}(X\theta-Y)^{T}W(X\theta-Y)
+\]</span></p>
+<p>接着看一下下面的定义就一目了然了:<br></p>
+<p><span class="math">\[
+\begin{align}
+&amp;X=\begin{bmatrix}
+x_{0}^{1} &amp;\cdots   &amp;x_{n}^{1} \\
+ \vdots &amp; \cdots  &amp; \vdots \\
+ x_{0}^{m}&amp;\cdots   &amp; x_{n}^{m}
+\end{bmatrix}\\
+\\
+&amp;Y=\begin{bmatrix}
+y^{1}\\
+\vdots\\
+y^{m}
+\end{bmatrix}\\
+\\
+&amp;\Theta =\begin{bmatrix}
+\theta_{0}\\
+\vdots\\
+\theta_{n-1}
+\end{bmatrix}\\
+\\
+&amp;W =\begin{bmatrix}
+\omega^{1} &amp;0  &amp; \cdots  &amp;0 \\
+ 0&amp;\omega^{2}  &amp;\cdots  &amp;0 \\
+ \vdots &amp;\ddots   &amp; \ddots &amp;\vdots \ \\
+ 0&amp; 0 &amp; \cdots &amp;\omega^{m}
+\end{bmatrix}
+\end{align}
+\]</span></p>
+<p>接下来就是重头戏了,求导<br></p>
+<p><span class="math">\[
+\begin{align}
+\frac{\partial }{\partial \theta}J(\theta)&amp;=\frac{1}{2}(X\theta-Y)^{T}W(X\theta-Y)\\
+&amp;=\frac{1}{2}\frac{\partial }{\partial \theta}(\theta^{T}X^{T}WX\theta-\theta^{T}X^{T}WY-Y^{T}WX\theta+Y^{T}WY)\\
+&amp;=\frac{1}{2}(\frac{\partial }{\partial \theta}(\theta X^{T}WX\theta)-X^{T}WY-X^{T}W^{T}Y)\\&amp;=\frac{1}{2}(X^{T}WX\theta+X^{T}W^{T}X\theta-X^{T}WY-X^{T}W^{T}Y)\\
+&amp;=\frac{1}{2}(X^{T}WX\theta+X^{T}WX\theta-X^{T}WY-X^{T}WY)\\
+&amp;=X^{T}WX\theta-X^{T}WY\\
+&amp;=0
+\end{align}
+\]</span></p>
+<p>有以上公式推导,最后得到:<br></p>
+<p><span class="math">\[
+\theta=(X^{T}WX)^{-1}X^{T}WY
+\]</span></p>
+<h1 id="推荐">推荐</h1>
+<p>公式终于推导完成,里面导数的细节有很多不是一句话就能说清除的.这里记载几个矩阵导数最基本的公式.<br> 对于列向量<span class="math">\(\vec{x}\)</span>,有:<br></p>
+<p><span class="math">\[
+\begin{align}
+&amp;\frac{\partial A\vec{x}}{\partial \vec{x}}=A^{T}\\
+\\
+&amp;\frac{\partial A\vec{x}}{\partial \vec{x}^{T}}=A\\
+\\
+&amp;\frac{\partial \vec{x}^{T}A}{\partial \vec{x}}=A\\
+\end{align}
+\]</span></p>
+<p>矩阵的求导的知识实在太多,我觉得推荐几个网址为好,也方便日后查看<br> <a href="https://en.wikipedia.org/wiki/Matrix_calculus#Vector-by-vector_identities" target="_blank" rel="external">矩阵运算维基百科(英文)</a><br> <a href="http://blog.csdn.net/shouhuxianjian/article/details/46669365" target="_blank" rel="external">矩阵运算(中文)</a><br> 还有一个是网友自己的记录心得,比较通俗易懂些<br> <a href="http://blog.csdn.net/wbgxx333/article/details/22992977" target="_blank" rel="external">矩阵求导(网友总结)</a><br> 最后给出Locally Weighted Linear Regression的原文出处,我只是做了一点改动,使得公式推导更加清晰 <a href="http://www.dsplog.com/2012/02/05/weighted-least-squares-and-locally-weighted-linear-regression/" target="_blank" rel="external">局部加权线性回归</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/07/20/2016-07-20-numpy-python/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">numpy的基本学习</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/07/23/2016-07-23-latex-learning-experience/">
+        <span class="next-text nav-default">LaTex基本应用技巧</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/23/2016-07-23-ml-matrix/"
+           data-title="矩阵导数运算" data-url="http://yoursite.com/2016/07/23/2016-07-23-ml-matrix/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

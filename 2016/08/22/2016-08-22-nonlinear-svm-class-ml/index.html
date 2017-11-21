@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SVM 非线性数据分类"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/22/2016-08-22-nonlinear-svm-class-ml/"/>
+
+
+<meta name="description" content="前面几篇博文中,讲到了svm非线性分类的问题,今天我们就来实现一下它的代码.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVM 非线性数据分类">
+<meta property="og:url" content="http://yoursite.com/2016/08/22/2016-08-22-nonlinear-svm-class-ml/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="前面几篇博文中,讲到了svm非线性分类的问题,今天我们就来实现一下它的代码.">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/non_svm1.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/non_svm2.png">
+<meta property="og:updated_time" content="2016-08-26T15:22:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVM 非线性数据分类">
+<meta name="twitter:description" content="前面几篇博文中,讲到了svm非线性分类的问题,今天我们就来实现一下它的代码.">
+<meta name="twitter:image" content="http://o6fdahi3n.bkt.clouddn.com/non_svm1.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> SVM 非线性数据分类 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SVM 非线性数据分类
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 22, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#理论"><span class="toc-text">理论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>前面几篇博文中,讲到了svm非线性分类的问题,今天我们就来实现一下它的代码. <a id="more"></a></p>
+<h1 id="问题">问题</h1>
+<p>如下图像的分类:<br> <img src="http://o6fdahi3n.bkt.clouddn.com/non_svm1.png" alt="primaldata_nonsvm"></p>
+<h1 id="理论">理论</h1>
+<p>这儿不长篇大论,一句话:<strong>低维空间线性不可分的数据转换到高维空间(甚至无穷维空间)会线性可分</strong>.这儿我们使用<strong>高斯核(RBF)</strong>,也就是将二维转换到无穷维.</p>
+<h1 id="代码">代码</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding=utf8</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""加载原始数据，以及特征数据构建和组合</span></div><div class="line">    　　h=theta0*1+theta1*x+theta2*x^2+theta3*y+theta4*y^2</div><div class="line">    Returns:</div><div class="line">        xy:ndarray类型,(num_samples*2);被分类的点的坐标</div><div class="line">        lable:ndarray类型,(num_samples,);被分类的点的标签</div><div class="line">    """</div><div class="line">    class_data=np.loadtxt(<span class="string">'./data/nonlinear_svmdata.txt'</span>)</div><div class="line">    <span class="comment"># 点的xy坐标</span></div><div class="line">    xy=class_data[:,<span class="number">1</span>:]</div><div class="line">    <span class="comment"># 标签数据</span></div><div class="line">    lable=class_data[:,<span class="number">0</span>:<span class="number">1</span>]</div><div class="line">    lable=lable.reshape(lable.shape[<span class="number">0</span>],)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> xy,lable</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">plotboundary</span><span class="params">(labels, features, model, varargin=<span class="string">''</span>)</span>:</span></div><div class="line">    <span class="string">"""画出分类的数据和分类曲线</span></div><div class="line">    Args:</div><div class="line">        lables:ndarray类型,(num_samples,);被分类的点的标签(1或-1)</div><div class="line">        features:ndarray类型,(num_samples*2);被分类的点的坐标</div><div class="line">        model:SVC类型;训练的模型</div><div class="line">        varargin:str类型;可选变量,控制是否显示分类正确的程度(由颜色区分),默认为空(不显示),等于't'(显示)</div><div class="line">    """</div><div class="line">    xplot = np.linspace(min(features[:,<span class="number">0</span>]), max(features[:,<span class="number">0</span>]), <span class="number">100</span>)</div><div class="line">    yplot = np.linspace(min(features[:,<span class="number">1</span>]), max(features[:,<span class="number">1</span>]), <span class="number">100</span>)</div><div class="line">    <span class="comment"># 构建网格数据</span></div><div class="line">    [X,Y]=np.meshgrid(xplot,yplot)</div><div class="line"></div><div class="line">    vals = np.zeros(X.shape)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,X.shape[<span class="number">1</span>]):</div><div class="line">        <span class="comment"># 重构画图数据</span></div><div class="line">        x=np.array([X[:,i],Y[:,i]]).T</div><div class="line">        <span class="comment"># 获得决策值</span></div><div class="line">        decision_values=model.decision_function(x)</div><div class="line">        vals[:,i]=decision_values</div><div class="line"></div><div class="line">    <span class="comment"># 判断是否显示分类正确的程度</span></div><div class="line">    <span class="keyword">if</span>(varargin==<span class="string">'t'</span>):</div><div class="line">       plt.contourf(X,Y,vals,<span class="number">50</span>,linestyles=<span class="keyword">None</span>)</div><div class="line"></div><div class="line">    plt.contour(X,Y,vals,[<span class="number">0</span>],linestyles=<span class="string">'solid'</span>,linewidths=<span class="number">2</span>,colors=<span class="string">'black'</span>)</div><div class="line"></div><div class="line">    <span class="comment"># 找到不同样本的行数</span></div><div class="line">    pos=np.where(labels==<span class="number">1</span>)</div><div class="line">    neg=np.where(labels==<span class="number">-1</span>)</div><div class="line"></div><div class="line">    <span class="comment"># 按类别画分类点</span></div><div class="line">    plt.plot(features[pos,<span class="number">0</span>],features[pos,<span class="number">1</span>],<span class="string">'bo'</span>)</div><div class="line">    plt.plot(features[neg,<span class="number">0</span>],features[neg,<span class="number">1</span>],<span class="string">'ro'</span>)</div><div class="line"></div><div class="line"></div><div class="line">    plt.show()</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line"></div><div class="line">    <span class="comment"># 加载数据</span></div><div class="line">    X,y=load_data()</div><div class="line">    <span class="comment"># 创建svc对象</span></div><div class="line">    clf=SVC(C=<span class="number">1</span>,kernel=<span class="string">'rbf'</span>,gamma=<span class="number">100</span>)</div><div class="line"></div><div class="line">    clf.fit(X,y)</div><div class="line"></div><div class="line">    plotboundary(y,X,clf,<span class="string">'t'</span>)</div></pre></td></tr></table></figure>
+
+<p>代码上完了,接下来秀一下分类结果:<br> <img src="http://o6fdahi3n.bkt.clouddn.com/non_svm2.png" alt="nonsvmresult"></p>
+<h1 id="总结">总结</h1>
+<p>svm告一段了,虽然我的博文一致是用svm进行<strong>分类</strong>.但是svm是可以进行<strong>回归</strong>任务的.在sklearn中就有SVR和SVC之分,台大林田轩老师也对svm的回归问题做了证明和解释.<strong>最后比较重要的是在实际应用中,svm的参数选择很重要.如果不信的话,可以改改上面代码<span class="math">\(\gamma\)</span>的值</strong></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/20/2016-08-20-soft-margin-svm-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Soft-margin SVM</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/22/2016-08-22-feeling-python/">
+        <span class="next-text nav-default">Python 学习感悟</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/22/2016-08-22-nonlinear-svm-class-ml/"
+           data-title="SVM 非线性数据分类" data-url="http://yoursite.com/2016/08/22/2016-08-22-nonlinear-svm-class-ml/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

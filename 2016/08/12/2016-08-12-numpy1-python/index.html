@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="numpy实践的简单心得"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/12/2016-08-12-numpy1-python/"/>
+
+
+<meta name="description" content="经常出现这样的情况,以前会的知识,过一段时间有不会了,大多数人把它归结于遗忘.无论怎么样,下一次你不会了,肯定又得浪费时间去查资料,那为什么不他们记录下来了.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy实践的简单心得">
+<meta property="og:url" content="http://yoursite.com/2016/08/12/2016-08-12-numpy1-python/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="经常出现这样的情况,以前会的知识,过一段时间有不会了,大多数人把它归结于遗忘.无论怎么样,下一次你不会了,肯定又得浪费时间去查资料,那为什么不他们记录下来了.">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="numpy实践的简单心得">
+<meta name="twitter:description" content="经常出现这样的情况,以前会的知识,过一段时间有不会了,大多数人把它归结于遗忘.无论怎么样,下一次你不会了,肯定又得浪费时间去查资料,那为什么不他们记录下来了.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> numpy实践的简单心得 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          numpy实践的简单心得
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 12, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#np.where"><span class="toc-text">np.where</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#np.sum"><span class="toc-text">np.sum</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#np.maximum"><span class="toc-text">np.maximum</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#除法"><span class="toc-text">除法</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>经常出现这样的情况,以前会的知识,过一段时间有不会了,大多数人把它归结于遗忘.无论怎么样,下一次你不会了,肯定又得浪费时间去查资料,那为什么不他们记录下来了. <a id="more"></a></p>
+<h1 id="np.where">np.where</h1>
+<p>这个函数其实很有用,能根据array的<strong>值</strong>找到相应的<strong>位置</strong>,不过奇葩的是返回的位置却是pyhton中<strong>tuple类型</strong> <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>])</div><div class="line">b=np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">2</span>,<span class="number">5</span>,<span class="number">1</span>],[<span class="number">7</span>,<span class="number">3</span>,<span class="number">1</span>]])</div><div class="line"><span class="keyword">print</span> np.where(a==<span class="number">1</span>)</div><div class="line"><span class="keyword">print</span> np.where(b==<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>结果<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(array([0, 3]),)</div><div class="line">(array([0, 1, 2]), array([0, 2, 2]))</div></pre></td></tr></table></figure></p>
+<h1 id="np.sum">np.sum</h1>
+<p>这个函数本来没多复杂,不过我个人的<strong>理解</strong>上有点小问题,按axis相加总是理解反了 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>]])</div><div class="line"><span class="comment"># 所有元素都加起来</span></div><div class="line">sum1=np.sum(a)</div><div class="line"><span class="comment"># 按列相加(不应该是axis=1吗),其实就是把每一行对应的位置相加</span></div><div class="line">sum2=np.sum(a,axis=<span class="number">0</span>)</div><div class="line"><span class="comment">#按行相加</span></div><div class="line">sum3=np.sum(a,axis=<span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<h1 id="np.maximum">np.maximum</h1>
+<p>这个函数就有点意思,它能够比较两个array,并且能够返回对应位置的值大的元素 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">8</span>])</div><div class="line">b=np.array([<span class="number">4</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>])</div><div class="line"><span class="keyword">print</span> np.maximum(a,b)</div></pre></td></tr></table></figure></p>
+<p>结果<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[4 5 3 8]</div></pre></td></tr></table></figure></p>
+<h1 id="除法">除法</h1>
+<p>和其他语言一样,会出现如下现象<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">1/2=0</div></pre></td></tr></table></figure></p>
+<p>解决方法<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/12/2016-08-12-navie-bayes-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">朴素贝叶斯分类</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/18/2016-08-18-hard-margin-svm1-ml/">
+        <span class="next-text nav-default">Primal SVM</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/12/2016-08-12-numpy1-python/"
+           data-title="numpy实践的简单心得" data-url="http://yoursite.com/2016/08/12/2016-08-12-numpy1-python/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

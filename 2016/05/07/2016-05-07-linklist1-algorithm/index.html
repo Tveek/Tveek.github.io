@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="链表-初始化"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/05/07/2016-05-07-linklist1-algorithm/"/>
+
+
+<meta name="description" content="本篇主要记载链表如何初始化和C++的指针、引用相关的内容。着重点在代码本身，毕竟链表的思想很简单。">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表-初始化">
+<meta property="og:url" content="http://yoursite.com/2016/05/07/2016-05-07-linklist1-algorithm/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本篇主要记载链表如何初始化和C++的指针、引用相关的内容。着重点在代码本身，毕竟链表的思想很简单。">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/linklist_fun_out.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/linklist_fun_in.png">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链表-初始化">
+<meta name="twitter:description" content="本篇主要记载链表如何初始化和C++的指针、引用相关的内容。着重点在代码本身，毕竟链表的思想很简单。">
+<meta name="twitter:image" content="http://o6fdahi3n.bkt.clouddn.com/linklist_fun_out.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 链表-初始化 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          链表-初始化
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          May 7, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#链表"><span class="toc-text">链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c指针和引用"><span class="toc-text">C++指针和引用</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>本篇主要记载链表如何初始化和C++的指针、引用相关的内容。着重点在代码本身，毕竟链表的思想很简单。</p>
+<a id="more"></a>
+
+
+
+<h1 id="链表">链表</h1>
+<p>学过数据结构的人应该对其有所了解，网上的资料很多，这里就不上图了（哈哈，不想浪费我的云存储空间）。链表其实就是把<strong>节点</strong>串起来，每一个节点一般是由一个<strong>指针域</strong>和<strong>值域</strong>组成。指针域用来指向下一个节点，值域代表本节点的值。<br> 说了这么多，还是上代码吧: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> list_node ListNode;</div><div class="line"></div><div class="line"><span class="comment">//节点</span></div><div class="line"><span class="keyword">struct</span> list_node</div><div class="line">&#123;</div><div class="line">	<span class="comment">//这里大多数人看到的是：</span></div><div class="line">    <span class="comment">//struct list_node* next</span></div><div class="line">	ListNode* next;</div><div class="line">	<span class="keyword">int</span> value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//用一个数组初始化链表</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InitList</span><span class="params">(ListNode*&amp; head,<span class="keyword">int</span>* <span class="built_in">array</span>,<span class="keyword">int</span> n)</span></span></div><div class="line">&#123;</div><div class="line">	head=<span class="literal">NULL</span>;</div><div class="line">	ListNode* tmp;</div><div class="line">	ListNode* record;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</div><div class="line">	&#123;</div><div class="line">		tmp=<span class="keyword">new</span> ListNode;</div><div class="line">		tmp-&gt;value=<span class="built_in">array</span>[i];</div><div class="line">		tmp-&gt;next=<span class="literal">NULL</span>;</div><div class="line">		<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			head=tmp;</div><div class="line">			record=head;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span></div><div class="line">		&#123;</div><div class="line">			record-&gt;next=tmp;</div><div class="line">			record=tmp;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//打印构建好的链表</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_list</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line"><span class="comment">//这里有一个中间变量，可不是多此一举，为了保证链表的头指针始终指向表头</span></div><div class="line">	ListNode* tmp=<span class="built_in">list</span>;</div><div class="line">	<span class="keyword">while</span>(tmp!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;tmp-&gt;value&lt;&lt;<span class="string">" "</span>;</div><div class="line">		tmp=tmp-&gt;next;</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> <span class="built_in">array</span>[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</div><div class="line">	ListNode* <span class="built_in">list</span>;</div><div class="line">	InitList(<span class="built_in">list</span>,<span class="built_in">array</span>,<span class="number">10</span>);</div><div class="line">	print_list(<span class="built_in">list</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来主要说一下各个节点怎么连接起来。假设，有一个只有一个节点的链表，在链表尾部加入一个节点。显然需要两个指针才能完成任务，一个指针（tmp）指向新开辟的节点，另一个指针（record）节点指向当前链表的这个节点,那么我们只要令 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">record-&gt;next=tmp;</div><div class="line">record=tmp;</div></pre></td></tr></table></figure></p>
+<p>就可以把两个节点连起来，而且让record指向链表尾部。不过初始化链表这个过程，最开始应该是不存在链表的，那该怎么办了？<strong>其实我们只要把最开始的这个节点想象成空节点就好了。</strong>初始化第一个节点使用下面代码就可以了： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">head=tmp;</div><div class="line">record=head;</div></pre></td></tr></table></figure></p>
+<p>链表连接过程的大概思路就是这样子的，<strong>不过这并不代表你就能写出完整的代码了。</strong></p>
+<h1 id="c指针和引用">C++指针和引用</h1>
+<p>这里还是先分析一下每一行代码吧，毕竟C++指针和引用的东西也太多了。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> list_node ListNode;</div></pre></td></tr></table></figure></p>
+<p>这行代码只要是认真学了c语言的人应该能明白吧，要是还不明白我在举一个例子 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> my_int</div></pre></td></tr></table></figure></p>
+<p>这不就是把数据类型重新换了一个名字啦，以后就可以用它来代替原来的数据类型了，那么struct list_node又是说明数据类型了？<br> 其实它就是下面我们自己定义的数据类型： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> list_node</div><div class="line">&#123;</div><div class="line">	<span class="comment">//这里大多数人看到的是这种表示方法：</span></div><div class="line">    <span class="comment">//struct list_node* next</span></div><div class="line">	ListNode* next;<span class="comment">//有没有明白这里为什么是ListNode?</span></div><div class="line">	<span class="keyword">int</span> value;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>说白了就是定义了一个表示链表节点的数据类型。<br> InitList函数的主体思想我前面已经讲解了，这里就不再累赘了。不过有没有觉得参数 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ListNode*&amp; head</div></pre></td></tr></table></figure></p>
+<p>很奇怪，这里怎么有一个地址符号（&amp;）了？接下来就来揭晓奥秘吧。<br> 第一眼是不是觉得应该去掉地址符号，直接传一个链表的首地址就好了。如果去掉&amp;符号那么将得到如下的错误：<strong>Segmentation Faults</strong>（完整的错误我没有写出来），通过google，发现这是新手C+ + 程序员会遇到的问题（你要是没有一眼看出其中的门道，欢迎你加入C++程序员的行列）。 还是先上一下的测试程序吧： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> list_node ListNode;</div><div class="line"><span class="keyword">struct</span> list_node</div><div class="line">&#123;</div><div class="line">	ListNode* next;</div><div class="line">	<span class="keyword">int</span> value;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InitList</span><span class="params">(ListNode* head,<span class="keyword">int</span>* <span class="built_in">array</span>,<span class="keyword">int</span> n)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"在InitList函数内，链表初始化之前，head的值："</span>&lt;&lt;head&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"在InitList函数内，链表初始化之前，head的地址："</span>&lt;&lt;&amp;head&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	head=<span class="literal">NULL</span>;</div><div class="line">	ListNode* tmp;</div><div class="line">	ListNode* record;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">/* code */</span></div><div class="line">		tmp=<span class="keyword">new</span> ListNode;</div><div class="line">		tmp-&gt;value=<span class="built_in">array</span>[i];</div><div class="line">		tmp-&gt;next=<span class="literal">NULL</span>;</div><div class="line">		<span class="keyword">if</span>(head==<span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			head=tmp;</div><div class="line">			record=head;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span></div><div class="line">		&#123;</div><div class="line">			record-&gt;next=tmp;</div><div class="line">			record=tmp;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"在InitList函数内，链表初始化之后，head的值："</span>&lt;&lt;head&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"在InitList函数内，链表初始化之后，head的地址："</span>&lt;&lt;&amp;head&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_list</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	ListNode* tmp=<span class="built_in">list</span>;</div><div class="line">	<span class="keyword">while</span>(tmp!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;tmp-&gt;value&lt;&lt;<span class="string">" "</span>;</div><div class="line">		tmp=tmp-&gt;next;</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> <span class="built_in">array</span>[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</div><div class="line">	ListNode* <span class="built_in">list</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"在初始化链表之前，list的值："</span>&lt;&lt;<span class="built_in">list</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;"在初始化链表之前，<span class="built_in">list</span>的地址："&lt;&lt;&amp;<span class="built_in">list</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	InitList(<span class="built_in">list</span>,<span class="built_in">array</span>,10);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;"在初始化链表之后，<span class="built_in">list</span>的值："&lt;&lt;<span class="built_in">list</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;"在初始化链表之后，<span class="built_in">list</span>的地址："&lt;&lt;&amp;<span class="built_in">list</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	// print_list(<span class="built_in">list</span>);</div><div class="line">	<span class="keyword">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行的结果:<br> 在初始化链表之前，list的值：0x400c7a<br> 在初始化链表之前，list的地址：0x7fffa8805<strong>70</strong>8<br></p>
+<p>在InitList函数内，链表初始化之前，head的值：0x400c7a<br> 在InitList函数内，链表初始化之前，head的地址：0x7fffa8805<strong>6b</strong>8<br></p>
+<p>在InitList函数内，链表初始化之后，head的值：0x12bd780<br> 在InitList函数内，链表初始化之后，head的地址：0x7fffa8805<strong>6b</strong>8<br></p>
+<p>在初始化链表之后，list的值：0x400c7a<br> 在初始化链表之后，list的地址：0x7fffa8805<strong>70</strong>8<br> 居然发现，list的值在初始化前后既然没有变化。<strong>在初始化过程中首地址开辟新地址空间，应该变了才对啊</strong>。接着，发现head的值在初始化前后是变化了的，这是为什么了？难道是在InitList中开辟的是临时变量，让人不经想起这段代码： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a)</span></span></div><div class="line">&#123;</div><div class="line">	a+=<span class="number">1</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> a=<span class="number">1</span>;</div><div class="line">	fun(a);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>不过真的就是同一个原因，就是因为在函数中开辟了临时变量。值得注意的是list和head指针<strong>指向的地址的值</strong>同样也是一个<strong>地址</strong>,而不是一个数值。<br> 首先来看一下<strong>list</strong>的变化过程： <br><img src="http://o6fdahi3n.bkt.clouddn.com/linklist_fun_out.png" alt="listimg"> <br>接着来看一下<strong>head</strong>的变化过程： <br><img src="http://o6fdahi3n.bkt.clouddn.com/linklist_fun_in.png" alt="headimg"> <br>通过比较<strong>head</strong>和<strong>list</strong>最后指向的地址不一样，就是因为临时变量作用的结果（<strong>方框顶上的地址是不一样的哦</strong>，表示<strong>list</strong>传到<strong>head</strong>地址是变了的，也就是有临时变量）。<strong>如果我们加上&amp;符号，地址就不会变了（其中的原因看一下下面推荐的博客吧）.</strong><br> <strong>总结一下，所有的问题都是因为被表面现象所迷惑，以为传一个指针进去就是把地址传进去了，归根到底是对指针和引用理解不深，因此我也找了一篇博客<a href="http://www.cnblogs.com/yanlingyin/archive/2011/12/07/2278961.html" target="_blank" rel="external">C++指针和引用的详解</a></strong></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/05/02/2016-05-02-search-algorithm/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">查找</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/08/2016-05-08-linklist2/">
+        <span class="next-text nav-default">链表-基本算法</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/07/2016-05-07-linklist1-algorithm/"
+           data-title="链表-初始化" data-url="http://yoursite.com/2016/05/07/2016-05-07-linklist1-algorithm/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

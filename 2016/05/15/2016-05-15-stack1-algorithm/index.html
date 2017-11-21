@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="栈-初始化"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/05/15/2016-05-15-stack1-algorithm/"/>
+
+
+<meta name="description" content="本篇写了一段栈的代码，参考了很多人的代码，而且这段代码也完成了很久了。不过里面有很多细节耐人寻味。其实就是很多C++的知识不是很明白，毕竟栈的思想很简单。">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈-初始化">
+<meta property="og:url" content="http://yoursite.com/2016/05/15/2016-05-15-stack1-algorithm/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本篇写了一段栈的代码，参考了很多人的代码，而且这段代码也完成了很久了。不过里面有很多细节耐人寻味。其实就是很多C++的知识不是很明白，毕竟栈的思想很简单。">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="栈-初始化">
+<meta name="twitter:description" content="本篇写了一段栈的代码，参考了很多人的代码，而且这段代码也完成了很久了。不过里面有很多细节耐人寻味。其实就是很多C++的知识不是很明白，毕竟栈的思想很简单。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 栈-初始化 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          栈-初始化
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          May 15, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#栈"><span class="toc-text">栈</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c"><span class="toc-text">C++</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>本篇写了一段栈的代码，参考了很多人的代码，而且这段代码也完成了很久了。不过里面有很多细节耐人寻味。其实就是很多C++的知识不是很明白，毕竟栈的思想很简单。</p>
+<a id="more"></a>
+
+
+
+<h1 id="栈">栈</h1>
+<p>FILO(先进后出)总所周知。栈的实现可以用数组或链表，一个基本的栈应该具有入栈、出栈、判断栈空等功能。这里用链表来实现： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="comment">//符号的预处理</span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> T;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> stack_node StackNode;</div><div class="line"><span class="comment">//链表节点</span></div><div class="line"><span class="keyword">struct</span> stack_node</div><div class="line">&#123;</div><div class="line">	StackNode* next;</div><div class="line">	T data;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//栈类</span></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">class</span> Stack</div><div class="line">&#123;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">	StackNode* top;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	Stack();</div><div class="line">	~Stack()&#123;<span class="keyword">delete</span> top;&#125;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">IsEmpty</span><span class="params">()</span> <span class="keyword">const</span></span>&#123;<span class="keyword">return</span> top-&gt;next==<span class="literal">NULL</span>;&#125;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">Pop</span><span class="params">(T&amp; x)</span></span>;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">Push</span><span class="params">(<span class="keyword">const</span> T&amp; x)</span></span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 出栈</div><div class="line"> */</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">bool</span> Stack&lt;T&gt;::Pop(T&amp; x)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>(IsEmpty() == <span class="literal">true</span>)</div><div class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">	StackNode *p = top-&gt;next;</div><div class="line">	x = p-&gt;data;					<span class="comment">//数据弹出</span></div><div class="line">	top-&gt;next = p-&gt;next;</div><div class="line">	<span class="keyword">delete</span> p;						<span class="comment">//删除P节点</span></div><div class="line">    p=<span class="literal">NULL</span>;</div><div class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 入栈</div><div class="line"> */</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line"><span class="keyword">bool</span> Stack&lt;T&gt;::Push(<span class="keyword">const</span> T&amp; x)</div><div class="line">&#123;</div><div class="line">	StackNode *p = <span class="keyword">new</span> StackNode;	<span class="comment">//分配新的空间</span></div><div class="line">	p-&gt;data = x;						<span class="comment">//数据存入</span></div><div class="line">	p-&gt;next = top-&gt;next;</div><div class="line">	top-&gt;next = p;						<span class="comment">//插到头点后</span></div><div class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 初始化栈</div><div class="line"> */</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div><div class="line">Stack&lt;T&gt;::Stack()</div><div class="line">&#123;</div><div class="line">	top = <span class="keyword">new</span> StackNode;		<span class="comment">//栈顶分配空间</span></div><div class="line">	top-&gt;next = <span class="literal">NULL</span>;						<span class="comment">//栈指针域指向空</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	Stack&lt;<span class="keyword">int</span>&gt; L;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++)</div><div class="line">		L.Push(i);</div><div class="line">	<span class="keyword">int</span> temp;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++)</div><div class="line">	&#123;</div><div class="line">			L.Pop(temp);</div><div class="line">			<span class="built_in">cout</span>&lt;&lt;<span class="string">" "</span>&lt;&lt;temp&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="c">C++</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> T;</div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div></pre></td></tr></table></figure>
+
+<p>这两行代码是为了扩展所需要的，这样我们可以很容易的修改栈元素的数据类型。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Stack&lt;<span class="keyword">int</span>&gt; L;</div><div class="line"></div><div class="line">Stack&lt;<span class="keyword">int</span>&gt;* p=<span class="literal">NULL</span>;</div><div class="line">p=<span class="keyword">new</span> Stack&lt;<span class="keyword">int</span>&gt;();</div></pre></td></tr></table></figure></p>
+<p>第一行代码是创建了栈，后两行也达到该效果。但是第一行代表一个完整的 C+ + 类，类的生命周期结束,C+ + 会默认执行一系列操作（执行析构函数等）；后两行是指针操作，需要调用者手动释放内存等内存管理操作. <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Pop</span><span class="params">(T&amp; x)</span></span>;</div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Push</span><span class="params">(<span class="keyword">const</span> T&amp; x)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>这两行也有很多知识，首先是<strong>&amp;</strong>，为什么不用指针;其实是<strong>const</strong>.下文来一一揭晓：<br>    对于引用，这里几乎都是值操作，使用指针反而有很多麻烦，但是我们又需要传入可以返回元素的值 ，当然引用是最好的选择了。<br>    对于const,是因为Push这个操作传入的值是不能改变的<br> 最后推荐几篇c++的博客：<br> <a href="http://blog.csdn.net/hairetz/article/details/4141043" target="_blank" rel="external">堆和栈的区别</a><br> <a href="http://www.cnblogs.com/yanlingyin/archive/2011/12/07/2278961.html" target="_blank" rel="external">C+ + 值传递、指针传递、引用传递详解</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/05/08/2016-05-08-linklist2/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">链表-基本算法</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/22/2016-05-22-stack2-algorithm/">
+        <span class="next-text nav-default">栈-基本应用</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/15/2016-05-15-stack1-algorithm/"
+           data-title="栈-初始化" data-url="http://yoursite.com/2016/05/15/2016-05-15-stack1-algorithm/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

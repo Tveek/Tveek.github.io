@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="机器学习其他最小化方法"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2015/08/12/2015-08-12-normal-newton-ml/"/>
+
+
+<meta name="description" content="前段时间,写了梯度下降的相关算法.其实最小化还有很多其他得方法.这里主要介绍Normal Equation和牛顿法(Newton’s method) $ $">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习其他最小化方法">
+<meta property="og:url" content="http://yoursite.com/2015/08/12/2015-08-12-normal-newton-ml/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="前段时间,写了梯度下降的相关算法.其实最小化还有很多其他得方法.这里主要介绍Normal Equation和牛顿法(Newton’s method) $ $">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/NewtonIteration.gif">
+<meta property="og:updated_time" content="2017-04-17T04:36:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习其他最小化方法">
+<meta name="twitter:description" content="前段时间,写了梯度下降的相关算法.其实最小化还有很多其他得方法.这里主要介绍Normal Equation和牛顿法(Newton’s method) $ $">
+<meta name="twitter:image" content="http://o6fdahi3n.bkt.clouddn.com/NewtonIteration.gif">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 机器学习其他最小化方法 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          机器学习其他最小化方法
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 12, 2015
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#normal-equation"><span class="toc-text">Normal Equation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#newtons-method"><span class="toc-text">Newton’s method</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>前段时间,写了梯度下降的相关算法.其实最小化还有很多其他得方法.这里主要介绍Normal Equation和牛顿法(Newton’s method) $ $ <a id="more"></a></p>
+<h1 id="normal-equation">Normal Equation</h1>
+<p>其实它就是一种解析解的形式,我们还记得那个用来拟合数据得方程</p>
+<p><span class="math">\[
+h(x)=\theta^Tx
+\]</span></p>
+<p>如果不使用<span class="math">\(h\)</span>,直接使用<span class="math">\(y\)</span>,以及我们使用的是所用得数据,而不是单个sample,那么新的表达式:</p>
+<p><span class="math">\[
+X\theta=y
+\]</span></p>
+<p>Andrew Ng的课程解释了一大堆,最后求出结果,这里介绍一个容易记忆得方法.上式左乘<span class="math">\(X^T\)</span>.</p>
+<p><span class="math">\[
+X^TX\theta=X^Ty
+\]</span></p>
+<p>只要保证<span class="math">\(X\)</span>的列无关,就可以保证<span class="math">\(X^TX\)</span>的逆存在,因为<span class="math">\(X\)</span>是我们选择得数据,因此<span class="math">\(X\)</span>列无关是完全可以做到的.那么:</p>
+<p><span class="math">\[
+\theta=(X^TX)^{-1}X^Ty
+\]</span></p>
+<p>如此以来,代码就很简单了 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Normal_Equation</span><span class="params">(X,y)</span>:</span></div><div class="line">	<span class="string">"""</span></div><div class="line">    batch gradient descent</div><div class="line">    :type X:    numpy.array</div><div class="line">    :param X:   a dataset(m*n)</div><div class="line">    :type y:    numpy.array</div><div class="line">    :param y:   a labels(m*1)</div><div class="line">    """</div><div class="line">	<span class="comment">#  insert one column with 1</span></div><div class="line">    X=np.insert(X,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</div><div class="line"></div><div class="line">    <span class="comment"># ndarray 转 matrix</span></div><div class="line">    X_mat=np.matrix(X)</div><div class="line">    tmp=(X_mat.T*X_mat).I*X_mat.T</div><div class="line">    tmp=np.array(tmp)</div><div class="line">    theta=tmp.dot(y)</div><div class="line">    <span class="keyword">return</span> theta</div></pre></td></tr></table></figure></p>
+<h1 id="newtons-method">Newton’s method</h1>
+<p>牛顿法其实是一种求零点的方法.假设有一函数<span class="math">\(l(\theta)\)</span>,看一下它的实现过程.<br> <img src="http://o6fdahi3n.bkt.clouddn.com/NewtonIteration.gif" alt="newtown.gif"><br> 下面写出其的迭代方程</p>
+<p><span class="math">\[
+\theta:=\theta-\frac{f(\theta)}{f^{&#39;}(\theta)}
+\]</span></p>
+<p>不过,这和我们拟合得方程又有什么关系了?这里不妨回想一下梯度下降是怎么求<span class="math">\(\theta\)</span>的,首先我们还是写出梯度下降得迭代方程</p>
+<p><span class="math">\[
+\theta_{j}:=\theta_{j}-\alpha \frac{\partial }{\partial \theta_{j}}J(\theta)
+\]</span></p>
+<p>我们知道<span class="math">\(J(\theta)\)</span>是凸函数,上式其实就是在找<span class="math">\(J^{&#39;}(\theta)\)</span>趋向于0时<span class="math">\(\theta\)</span>的值,那么我们对<span class="math">\(J^{&#39;}(\theta)\)</span>进行牛顿法,不也是可以求得<span class="math">\(\theta\)</span>.接下来给出牛顿法的表达式</p>
+<p><span class="math">\[
+\theta:=\theta-\frac{J^{&#39;}(\theta)}{J^{&#39;&#39;}(\theta)}
+\]</span></p>
+<p>化简</p>
+<p><span class="math">\[
+\theta:=\theta-H^{-1}\triangledown_{\theta}J(\theta)\\
+H_{ij}=\frac{\partial^2 J(\theta)}{\partial \theta_{i}\partial \theta_{j}}
+\]</span></p>
+<p>最终我们要写出代码,这里还是写出<span class="math">\(J^{&#39;}(\theta)\)</span>和<span class="math">\(J^{&#39;&#39;}(\theta)\)</span>的具体表达式</p>
+<p><span class="math">\[
+J^{&#39;}(\theta)=(h_{\theta}(x^{(k)})-y^{(k)})x_{i}^{k} \qquad (k\quad present\quad k\text{-}th\quad sample)\\
+J^{&#39;&#39;}(\theta)=x_{j}^{k}x_{i}^{k}
+\]</span></p>
+<p>公式也上了一大堆了,我还是喜欢代码 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Newton_Method</span><span class="params">(X,y)</span>:</span></div><div class="line">	<span class="string">"""</span></div><div class="line">    batch gradient descent</div><div class="line">    :type X:    numpy.array</div><div class="line">    :param X:   a dataset(m*n)</div><div class="line">    :type y:    numpy.array</div><div class="line">    :param y:   a labels(m*1)</div><div class="line">    """</div><div class="line">    X=np.insert(X,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</div><div class="line">    m=X.shape[<span class="number">0</span>]</div><div class="line">    n=X.shape[<span class="number">1</span>]</div><div class="line"></div><div class="line">    <span class="comment"># init theta</span></div><div class="line">    theta=np.zeros((n,<span class="number">1</span>))</div><div class="line">    max_iter=<span class="number">100</span></div><div class="line"></div><div class="line">    <span class="comment"># ndarray 转 matrix</span></div><div class="line">    X=np.matrix(X)</div><div class="line">    y=np.matrix(y)</div><div class="line">    theta=np.matrix(theta)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> range(<span class="number">0</span>,max_iter):</div><div class="line">        old_theta=theta</div><div class="line">        grad=X.T*(X*theta-y)</div><div class="line">        H=X.T*X</div><div class="line">        theta=theta-H.I*grad</div><div class="line">        diff_theta=theta-old_theta</div><div class="line">        <span class="keyword">if</span>(np.sqrt(diff_theta.T*diff_theta)&lt;<span class="number">0.000001</span>):</div><div class="line">            <span class="keyword">break</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> theta</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015/08/10/2015-08-10-gradiet-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">梯度下降算法详解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015/08/31/2015-08-31-appcompat_v7-android/">
+        <span class="next-text nav-default"> Android工程 含有appcompat_v7 的项目移植保存 </span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/12/2015-08-12-normal-newton-ml/"
+           data-title="机器学习其他最小化方法" data-url="http://yoursite.com/2015/08/12/2015-08-12-normal-newton-ml/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

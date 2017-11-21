@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Ubuntu14.04 Caffe 安装"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/10/2016-10-10-install-caffe/"/>
+
+
+<meta name="description" content="其实caffe的安装很简单，尤其是ubuntu14.04的用户.本文只是简单梳理一下，以及跑个简单的例子">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu14.04 Caffe 安装">
+<meta property="og:url" content="http://yoursite.com/2016/10/10/2016-10-10-install-caffe/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="其实caffe的安装很简单，尤其是ubuntu14.04的用户.本文只是简单梳理一下，以及跑个简单的例子">
+<meta property="og:updated_time" content="2017-04-17T05:25:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu14.04 Caffe 安装">
+<meta name="twitter:description" content="其实caffe的安装很简单，尤其是ubuntu14.04的用户.本文只是简单梳理一下，以及跑个简单的例子">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> Ubuntu14.04 Caffe 安装 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Ubuntu14.04 Caffe 安装
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 10, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#依赖库"><span class="toc-text">依赖库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装依赖"><span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装caffe"><span class="toc-text">安装caffe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载caffe源码"><span class="toc-text">下载caffe源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备make文件"><span class="toc-text">准备make文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译安装和测试是否安装成功"><span class="toc-text">编译安装和测试是否安装成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置caffe的python接口"><span class="toc-text">配置caffe的python接口</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lenet测试"><span class="toc-text">Lenet测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载数据"><span class="toc-text">下载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转换数据格式"><span class="toc-text">转换数据格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改solver"><span class="toc-text">修改solver</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行"><span class="toc-text">运行</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>其实caffe的安装很简单，尤其是ubuntu14.04的用户.本文只是简单梳理一下，以及跑个简单的例子 <a id="more"></a></p>
+<h1 id="依赖库">依赖库</h1>
+<p>执行任何指令都是有理由的，安装caffe也不例外．大概需要以下库:<br> <strong>BLAS，ProtoBuff，Opencv，Google-glog，gflags，LevelDB，LMDB，HDF5等</strong>．<br>caffe是深度学习框架，比如会涉及到线性代数库，计算库，数据处理库等．具体的作用参考:<br> <a href="http://blog.csdn.net/hqh45/article/details/51675104" target="_blank" rel="external">深度学习框架Caffe学习之依赖库</a></p>
+<h1 id="安装">安装</h1>
+<p>直接给官网地址：<a href="http://caffe.berkeleyvision.org/install_apt.html" target="_blank" rel="external">Caffe ubuntu 安装</a></p>
+<h2 id="安装依赖">安装依赖</h2>
+<p>我的机器只有CPU，故安装CPU-only安装的，不需要安装cuda, <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler</div><div class="line">sudo apt-get install --no-install-recommends libboost-all-dev</div><div class="line">sudo apt-get install libatlas-base-dev</div></pre></td></tr></table></figure></p>
+<p>对于ubuntu14.04安装以上依赖后，只需安装以下依赖即可:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev</div></pre></td></tr></table></figure></p>
+<h2 id="安装caffe">安装caffe</h2>
+<h3 id="下载caffe源码">下载caffe源码</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/BVLC/caffe.git</div></pre></td></tr></table></figure>
+
+<h3 id="准备make文件">准备make文件</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd caffe</div><div class="line">cp Makefile.config.example Makefile.config</div><div class="line"># Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired)</div></pre></td></tr></table></figure>
+
+<p>在caffe根目录里，打开<strong>Makefile.config</strong>文件,取消一下语句的注释<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># CPU_ONLY := 1</div></pre></td></tr></table></figure></p>
+<h3 id="编译安装和测试是否安装成功">编译安装和测试是否安装成功</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">make all -j4 # 我的机器最多跑４个线程</div><div class="line">make test</div><div class="line">make runtest</div></pre></td></tr></table></figure>
+
+<h3 id="配置caffe的python接口">配置caffe的python接口</h3>
+<p>直接推荐下面博客吧，不要问我为什么，我也不知道<br> <a href="http://blog.csdn.net/u011762313/article/details/47624119" target="_blank" rel="external">pycaffe接口配置</a></p>
+<h1 id="lenet测试">Lenet测试</h1>
+<p>既然caffe安装完了，那么我们来跑一个Lenet吧,其实就是<a href="http://caffe.berkeleyvision.org/gathered/examples/mnist.html" target="_blank" rel="external">官网Lenet教程</a><br> ## 进入caffe根目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd caffe</div></pre></td></tr></table></figure>
+
+<h2 id="下载数据">下载数据</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./data/mnist/get_mnist.sh</div></pre></td></tr></table></figure>
+
+<h2 id="转换数据格式">转换数据格式</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./examples/mnist/create_mnist.sh</div></pre></td></tr></table></figure>
+
+<h2 id="修改solver">修改solver</h2>
+<p>在/examples/mnist/下，打开lenet_solver.prototxt文件,修改solver_mode<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">solver_mode: CPU</div></pre></td></tr></table></figure></p>
+<h2 id="运行">运行</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./examples/mnist/train_lenet.sh</div></pre></td></tr></table></figure>
+
+<p>我Dell i5的机器跑了10来分钟</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/09/10/2016-09-10-pca-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">基于PCA的简单人脸识别</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/10/2016-10-10-kaggle_mnist-caffe/">
+        <span class="next-text nav-default">利用Caffe中的Lenet训练kaggle上手写体数据集</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/10/2016-10-10-install-caffe/"
+           data-title="Ubuntu14.04 Caffe 安装" data-url="http://yoursite.com/2016/10/10/2016-10-10-install-caffe/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

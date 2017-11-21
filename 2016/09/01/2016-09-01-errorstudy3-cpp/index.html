@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="C++错误学习之指针和引用"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/09/01/2016-09-01-errorstudy3-cpp/"/>
+
+
+<meta name="description" content="今天来探究一下指针作为函数参数的情况，顺便说两句它和引用的关系">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++错误学习之指针和引用">
+<meta property="og:url" content="http://yoursite.com/2016/09/01/2016-09-01-errorstudy3-cpp/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="今天来探究一下指针作为函数参数的情况，顺便说两句它和引用的关系">
+<meta property="og:updated_time" content="2016-09-01T14:29:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++错误学习之指针和引用">
+<meta name="twitter:description" content="今天来探究一下指针作为函数参数的情况，顺便说两句它和引用的关系">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> C++错误学习之指针和引用 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          C++错误学习之指针和引用
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Sep 1, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#code"><span class="toc-text">Code</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#error"><span class="toc-text">Error</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#analysis"><span class="toc-text">Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#summary"><span class="toc-text">Summary</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>今天来探究一下指针作为函数参数的情况，顺便说两句它和引用的关系 <a id="more"></a></p>
+<h1 id="code">Code</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">GlableFunction</span><span class="params">(<span class="keyword">int</span>* p)</span></span></div><div class="line">&#123;</div><div class="line">    p++;</div><div class="line">    (*p)=<span class="number">100</span>;</div><div class="line">    <span class="comment">//输出</span></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;*p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> num=<span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span>* p=&amp;num;</div><div class="line">	<span class="comment">//输出</span></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;*p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    GlableFunction(p);</div><div class="line">    <span class="comment">//输出</span></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;*p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<h1 id="error">Error</h1>
+<p>输出结果: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">10</div><div class="line">100</div></pre></td></tr></table></figure></p>
+<p>看上去没有错误，不过<strong>缺少一个数据,其实是有输出的，显示为空白行</strong></p>
+<h1 id="analysis">Analysis</h1>
+<p>上面这个疑惑，还得从下面这段代码说起: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">GlableFunction</span><span class="params">(<span class="keyword">int</span>* p)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> num=<span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span>* p=&amp;num;</div><div class="line"></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    GlableFunction(p);</div><div class="line">    <span class="built_in">cout</span>&lt;&lt;&amp;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出结果： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">0x7fff10e5cc88</div><div class="line">0x7fff10e5cc68</div><div class="line">0x7fff10e5cc88</div></pre></td></tr></table></figure></p>
+<p>从上面的结果可以看出，<strong>传入的指针，其实重新开辟了存储空间，相当于是值传递,相当于有一个临时指针，但是其指向的内容没有变</strong>.<br> 回到最开始的代码,我们将临时指针指加１，那么我们指向的内容变了．接着赋值．那么，<strong>我们其实没有改变main函数指针指向的值，因此输出的结果不同</strong>,但是我纳闷的是，<strong>为什么最后一个输出是空了？</strong>,于是就有了下面这段代码: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">GlableFunction</span><span class="params">(<span class="keyword">int</span>* p)</span></span></div><div class="line">&#123;</div><div class="line">    p++;</div><div class="line">    (*p)=<span class="number">100</span>;</div><div class="line">    <span class="built_in">cout</span>&lt;&lt;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> num=<span class="number">10</span>;</div><div class="line">    <span class="keyword">int</span>* p=&amp;num;</div><div class="line"></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    GlableFunction(p);</div><div class="line">    <span class="built_in">cout</span>&lt;&lt;p&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出结果: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">0x7ffff1e84f74</div><div class="line">0x7ffff1e84f78</div><div class="line">0x7fff00000064</div></pre></td></tr></table></figure></p>
+<p>这里我们惊奇的发现，<strong>第一个和第三个输出居然不一样了,p指针居然发生改变了,那么为什么最开始的代码没有第三个输出就解释得通了,但是指针为什么会变化我就无能为力了</strong></p>
+<p>下面来使用一下引用,看看有什么不同: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void GlableFunction(int&amp; p)</div><div class="line">&#123;</div><div class="line">    cout&lt;&lt;&amp;p&lt;&lt;endl;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main() &#123;</div><div class="line">    int p=10;</div><div class="line">    cout&lt;&lt;&amp;p&lt;&lt;endl;</div><div class="line">    GlableFunction(p);</div><div class="line">    cout&lt;&lt;&amp;p&lt;&lt;endl;</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出结果 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">0x7fffc1db240c</div><div class="line">0x7fffc1db240c</div><div class="line">0x7fffc1db240c</div></pre></td></tr></table></figure></p>
+<p><strong>居然把存放指针p的地址传进去了，那么我们在函数内做任何操作，就是直接对p操作了,这才是真正的引用传递</strong></p>
+<h1 id="summary">Summary</h1>
+<p>引用传递比指针传递安全多了，指针传递不知道什么时候就抽风(因为程序员可能对指针进行++等操作),引用其实可以简单的理解成是一个<strong>别名</strong>,对别名的操作就是对变量本身操作,是通过<strong>const指针</strong>实现的.<br> 1:引用不能为null<br> 2:引用只能初始化一次.</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/31/2016-08-31-errorstudy2-cpp/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">C++错误学习之继承重载</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/09/03/2016-09-03-errorstudy4-cpp/">
+        <span class="next-text nav-default">C++错误学习之私有变量访问</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/01/2016-09-01-errorstudy3-cpp/"
+           data-title="C++错误学习之指针和引用" data-url="http://yoursite.com/2016/09/01/2016-09-01-errorstudy3-cpp/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

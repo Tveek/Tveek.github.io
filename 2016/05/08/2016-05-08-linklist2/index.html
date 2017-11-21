@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="链表-基本算法"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/05/08/2016-05-08-linklist2/"/>
+
+
+<meta name="description" content="本篇主要记载链表的一些基本算法和问题。">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表-基本算法">
+<meta property="og:url" content="http://yoursite.com/2016/05/08/2016-05-08-linklist2/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本篇主要记载链表的一些基本算法和问题。">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链表-基本算法">
+<meta name="twitter:description" content="本篇主要记载链表的一些基本算法和问题。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 链表-基本算法 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          链表-基本算法
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          May 8, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#链表的长度"><span class="toc-text">链表的长度</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#翻转单链表"><span class="toc-text">翻转单链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#查找倒数第k个节点"><span class="toc-text">查找倒数第K个节点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#从尾到头打印链表"><span class="toc-text">从尾到头打印链表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#判断链表是否有环"><span class="toc-text">判断链表是否有环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#删除节点"><span class="toc-text">删除节点</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>本篇主要记载链表的一些基本算法和问题。</p>
+<a id="more"></a>
+
+
+
+<h1 id="链表的长度">链表的长度</h1>
+<p>这个算法的思想简单，这里就不做过多解释，直接给出非递归和递归的代码<br> <strong>非递归算法：</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetListLength</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	ListNode* tmp=<span class="built_in">list</span>;</div><div class="line">	<span class="keyword">int</span> len=<span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span>(tmp==<span class="literal">NULL</span>)</div><div class="line">		<span class="keyword">return</span> len;</div><div class="line">	<span class="keyword">while</span>(tmp!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		len++;</div><div class="line">		tmp=tmp-&gt;next;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> len;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>递归算法：</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">RecuGetListLength</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	ListNode* tmp=<span class="built_in">list</span>;</div><div class="line">	<span class="keyword">if</span>(tmp==<span class="literal">NULL</span>)</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	<span class="keyword">else</span>&#123;</div><div class="line">		tmp=tmp-&gt;next;</div><div class="line">		<span class="keyword">return</span> RecuGetListLength(tmp)+<span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="翻转单链表">翻转单链表</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function">ListNode* <span class="title">ReverseList</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>(<span class="built_in">list</span>==<span class="literal">NULL</span> || <span class="built_in">list</span>-&gt;next==<span class="literal">NULL</span>)</div><div class="line">		<span class="keyword">return</span> <span class="built_in">list</span>;</div><div class="line">	<span class="comment">//l1,l2,l3 分别依次指向原链表的三个节点</span></div><div class="line">	ListNode* l1=<span class="built_in">list</span>;</div><div class="line">	ListNode* l2=<span class="built_in">list</span>-&gt;next;</div><div class="line">	ListNode* l3;</div><div class="line">	<span class="keyword">while</span>(l2!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">//翻转相邻的两个节点</span></div><div class="line">		l3=l2-&gt;next;</div><div class="line">		l2-&gt;next=l1;</div><div class="line">		<span class="comment">//更新节点的位置</span></div><div class="line">		l1=l2;</div><div class="line">		l2=l3;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//将原链表的头指针置为NULL</span></div><div class="line">	<span class="built_in">list</span>-&gt;next=l2;</div><div class="line">	<span class="comment">//更新新链表的头节点</span></div><div class="line">	<span class="built_in">list</span>=l1;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">list</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<h1 id="查找倒数第k个节点">查找倒数第K个节点</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function">ListNode* <span class="title">RecipKthNode</span><span class="params">(ListNode* <span class="built_in">list</span>,<span class="keyword">int</span> k)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">/*基本思路，让第一个指针先走k步，接着第二个指针跟着走，直到第一个指针走到最后</span></div><div class="line">	，这时第二个指针就走到倒数第K个位置*/</div><div class="line">	ListNode* tmp=<span class="built_in">list</span>;</div><div class="line">	<span class="comment">//考虑到链表的长度小于k，先置为NULL</span></div><div class="line">	ListNode* kthnode=<span class="literal">NULL</span>;</div><div class="line">	<span class="keyword">int</span> count=<span class="number">0</span>;</div><div class="line">	<span class="keyword">while</span>(tmp!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		count++;</div><div class="line">		<span class="keyword">if</span>(kthnode!=<span class="literal">NULL</span>)</div><div class="line">			kthnode=kthnode-&gt;next;</div><div class="line">		<span class="keyword">if</span>(count==k)</div><div class="line">		&#123;</div><div class="line">			kthnode=<span class="built_in">list</span>;</div><div class="line">		&#125;</div><div class="line">		tmp=tmp-&gt;next;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> kthnode;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<h1 id="从尾到头打印链表">从尾到头打印链表</h1>
+<p>这个问题你要是想到递归，那就没什么问题了,不过还是那就话，递归不好理解。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_begin_tail</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>(<span class="built_in">list</span>!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		print_begin_tail(<span class="built_in">list</span>-&gt;next);</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;<span class="built_in">list</span>-&gt;value&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="判断链表是否有环">判断链表是否有环</h1>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HasCircle</span><span class="params">(ListNode* <span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">/*思路就是一个快指针，每次走两步，一个慢指针，每次走一步，如果</span></div><div class="line">	快指针追上慢指针，则说明有环存在，否则没有环*/</div><div class="line">	ListNode* fast=<span class="built_in">list</span>;</div><div class="line">	ListNode* slow=<span class="built_in">list</span>;</div><div class="line">	<span class="keyword">while</span>(fast!=<span class="literal">NULL</span>&amp;&amp; fast-&gt;next!=<span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		fast=fast-&gt;next-&gt;next;</div><div class="line">		slow=slow-&gt;next;</div><div class="line">		<span class="keyword">if</span>(fast==slow)</div><div class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">	&#125;</div><div class="line">	retrun <span class="literal">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<h1 id="删除节点">删除节点</h1>
+<p>这里要求O（1）的时间复杂度。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(ListNode* phead,ListNode* tobedelete)</span></span></div><div class="line"> &#123;</div><div class="line"> 	<span class="keyword">if</span>(tobedelete == <span class="literal">NULL</span> || phead == <span class="literal">NULL</span>)</div><div class="line"> 		<span class="keyword">return</span>;</div><div class="line"> 	ListNode* temp = phead;</div><div class="line"> 	<span class="comment">//将下一个节点的数据复制到本节点，然后删除下一个节点</span></div><div class="line">	<span class="keyword">if</span>(tobedelete-&gt;next != <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		tobedelete-&gt;value = tobedelete-&gt;next-&gt;value;</div><div class="line">		ListNode* temp = tobedelete-&gt;next;</div><div class="line">		tobedelete-&gt;next = tobedelete-&gt;next-&gt;next;</div><div class="line">		<span class="keyword">delete</span> temp; </div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> <span class="comment">//要删除的是最后一个节点</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(phead == tobedelete)<span class="comment">//链表中只有一个节点的情况</span></div><div class="line">		&#123;</div><div class="line">			phead = <span class="literal">NULL</span>;</div><div class="line">			<span class="keyword">delete</span> tobedelete;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span></div><div class="line">		&#123;</div><div class="line">			ListNode* pnode = phead;</div><div class="line">			<span class="keyword">while</span>(pnode-&gt;next != tobedelete)<span class="comment">//找到倒数第二个节点</span></div><div class="line">				pnode =pnode-&gt;next;</div><div class="line">			pnode-&gt;next = <span class="literal">NULL</span>;</div><div class="line">			<span class="keyword">delete</span> tobedelete;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/05/07/2016-05-07-linklist1-algorithm/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">链表-初始化</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/15/2016-05-15-stack1-algorithm/">
+        <span class="next-text nav-default">栈-初始化</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/08/2016-05-08-linklist2/"
+           data-title="链表-基本算法" data-url="http://yoursite.com/2016/05/08/2016-05-08-linklist2/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

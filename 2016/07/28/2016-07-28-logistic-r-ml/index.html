@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="逻辑回归"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/07/28/2016-07-28-logistic-r-ml/"/>
+
+
+<meta name="description" content="本篇开启机器学习另一个重要的知识点,逻辑回归(Logistic Regression),其实它也是传承了线性回归的知识,只是稍微做了点变动.$ $">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逻辑回归">
+<meta property="og:url" content="http://yoursite.com/2016/07/28/2016-07-28-logistic-r-ml/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本篇开启机器学习另一个重要的知识点,逻辑回归(Logistic Regression),其实它也是传承了线性回归的知识,只是稍微做了点变动.$ $">
+<meta property="og:updated_time" content="2017-04-17T05:14:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="逻辑回归">
+<meta name="twitter:description" content="本篇开启机器学习另一个重要的知识点,逻辑回归(Logistic Regression),其实它也是传承了线性回归的知识,只是稍微做了点变动.$ $">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 逻辑回归 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          逻辑回归
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Jul 28, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#公式"><span class="toc-text">公式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>本篇开启机器学习另一个重要的知识点,逻辑回归(Logistic Regression),其实它也是传承了线性回归的知识,只是稍微做了点变动.$ $ <a id="more"></a></p>
+<h1 id="公式">公式</h1>
+<p>讲到逻辑回归(Logistic regression),我们通常想到的是二分类.但是为什么它的名字叫回归了.下面我们来解开其面纱.<br> 首先我要声明一下,为什么选择<span class="math">\(g(z)\)</span>这个函数,我这儿还不能解释</p>
+<p><span class="math">\[
+\begin{align}
+&amp;h_\theta(x)=g(\theta^Tx)=\frac{1}{1+e^{-\theta^{T}x}}\\
+&amp;g(z)=\frac{1}{1+e^{-z}}
+\end{align}
+\]</span></p>
+<p>我们知道<span class="math">\(0\leqslant h\leq 1\)</span>,它可以表示一个概率,由于这儿是二分类问题,很自然有下面的概率假设:</p>
+<p><span class="math">\[
+\begin{align}
+&amp;P(y=1|x;\theta)=h_{\theta}(x)\\
+\\
+&amp;P(y=0|x;\theta)=1-h_{\theta}(x)\\
+\\
+&amp;\Rightarrow p(y|x;\theta)=(h_{\theta}(x))^{y}(1-h_{\theta}(x))^{1-y}
+\end{align}
+\]</span></p>
+<p>这样,我们面对得就是一个概率问题.我们要使得数据尽可能得满足该概率假设,说白了其实就是参数估计问题.这里我们采用最大似然估计.</p>
+<p><span class="math">\[
+\begin{align}
+L(\theta)&amp;=\prod_{i=1}^{m}p(y^{(i)}|x^{(i)};\theta)\\
+&amp;=\prod_{i=1}^{m}(h_{\theta}(x^{(i)}))^{y^{(i)}}(1-h_{\theta}(x^{(i)}))^{1-y^{(i)}}
+\end{align}
+\]</span></p>
+<p>接下来就是,求偏导数:</p>
+<p><span class="math">\[
+\begin{align}
+\frac{\partial }{\partial \theta_{j}}l(\theta)=(y-h_{\theta}(x))x_{j}
+\end{align}
+\]</span></p>
+<p>到这儿我们会想,是否有解析解,可惜的是确实没有,那么我们就只能用迭代算法了.</p>
+<p><span class="math">\[
+\theta_{j}:=\theta_{j}+\alpha(y-h_{\theta}(x))x_{j}
+\]</span></p>
+<h1 id="代码">代码</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> numpy.matlib</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(inX)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1</span> + np.exp(-inX))</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">trainLogRegres</span><span class="params">(train_x, train_y, opts)</span>:</span></div><div class="line">    <span class="comment"># calculate training time</span></div><div class="line">    startTime = time.time()</div><div class="line"></div><div class="line">    numSamples, numFeatures = train_x.shape</div><div class="line">    alpha = opts[<span class="string">'alpha'</span>]; maxIter = opts[<span class="string">'maxIter'</span>]</div><div class="line">    theta = np.matlib.ones((numFeatures, <span class="number">1</span>))</div><div class="line"></div><div class="line">    <span class="comment"># optimize through gradient descent algorilthm</span></div><div class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(maxIter):</div><div class="line">        <span class="keyword">if</span> opts[<span class="string">'optimizeType'</span>] == <span class="string">'gradDescent'</span>: <span class="comment"># gradient descent algorilthm</span></div><div class="line">            output = sigmoid(train_x * theta)</div><div class="line">            error = train_y - output</div><div class="line">            theta = theta + alpha * train_x.T * error</div><div class="line">        <span class="keyword">elif</span> opts[<span class="string">'optimizeType'</span>] == <span class="string">'stocGradDescent'</span>: <span class="comment"># stochastic gradient descent</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(numSamples):</div><div class="line">                output = sigmoid(train_x[i, :] * theta)</div><div class="line">                error = train_y[i, <span class="number">0</span>] - output</div><div class="line">                theta = theta + alpha * train_x[i, :].T * error</div><div class="line">        <span class="keyword">elif</span> opts[<span class="string">'optimizeType'</span>] == <span class="string">'smoothStocGradDescent'</span>: <span class="comment"># smooth stochastic gradient descent</span></div><div class="line">            <span class="comment"># randomly select samples to optimize for reducing cycle fluctuations</span></div><div class="line">            dataIndex = range(numSamples)</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(numSamples):</div><div class="line">                alpha = <span class="number">4.0</span> / (<span class="number">1.0</span> + k + i) + <span class="number">0.01</span></div><div class="line">                randIndex = int(np.random.uniform(<span class="number">0</span>, len(dataIndex)))</div><div class="line">                output = sigmoid(train_x[randIndex, :] * theta)</div><div class="line">                error = train_y[randIndex, <span class="number">0</span>] - output</div><div class="line">                theta = theta + alpha * train_x[randIndex, :].T * error</div><div class="line">                <span class="keyword">del</span>(dataIndex[randIndex]) <span class="comment"># during one interation, delete the optimized sample</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">raise</span> NameError(<span class="string">'Not support optimize method type!'</span>)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">print</span> <span class="string">'Congratulations, training complete! Took %fs!'</span> % (time.time() - startTime)</div><div class="line">    <span class="keyword">return</span> theta</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testLogRegres</span><span class="params">(theta, test_x, test_y)</span>:</span></div><div class="line">    numSamples, numFeatures = np.shape(test_x)</div><div class="line">    matchCount = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(numSamples):</div><div class="line">        predict = sigmoid(test_x[i, :] * theta)[<span class="number">0</span>, <span class="number">0</span>] &gt; <span class="number">0.5</span></div><div class="line">        <span class="keyword">if</span> predict == bool(test_y[i, <span class="number">0</span>]):</div><div class="line">            matchCount += <span class="number">1</span></div><div class="line">    accuracy = float(matchCount) / numSamples</div><div class="line">    <span class="keyword">return</span> accuracy</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">showLogRegres</span><span class="params">(theta, train_x, train_y)</span>:</span></div><div class="line">    <span class="comment"># notice: train_x and train_y is mat datatype</span></div><div class="line">    numSamples, numFeatures = np.shape(train_x)</div><div class="line">    <span class="keyword">if</span> numFeatures != <span class="number">3</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">"Sorry! I can not draw because the dimension of your data is not 2!"</span></div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="comment"># draw all samples</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(numSamples):</div><div class="line">        <span class="keyword">if</span> int(train_y[i, <span class="number">0</span>]) == <span class="number">0</span>:</div><div class="line">            plt.plot(train_x[i, <span class="number">1</span>], train_x[i, <span class="number">2</span>], <span class="string">'ro'</span>)</div><div class="line">        <span class="keyword">elif</span> int(train_y[i, <span class="number">0</span>]) == <span class="number">1</span>:</div><div class="line">            plt.plot(train_x[i, <span class="number">1</span>], train_x[i, <span class="number">2</span>], <span class="string">'bo'</span>)</div><div class="line"></div><div class="line">    <span class="comment"># draw the classify line</span></div><div class="line">    min_x = min(train_x[:, <span class="number">1</span>])[<span class="number">0</span>, <span class="number">0</span>]</div><div class="line">    max_x = max(train_x[:, <span class="number">1</span>])[<span class="number">0</span>, <span class="number">0</span>]</div><div class="line">    theta = theta.getA()  <span class="comment"># convert mat to array</span></div><div class="line">    y_min_x = float(-theta[<span class="number">0</span>] - theta[<span class="number">1</span>] * min_x) / theta[<span class="number">2</span>]</div><div class="line">    y_max_x = float(-theta[<span class="number">0</span>] - theta[<span class="number">1</span>] * max_x) / theta[<span class="number">2</span>]</div><div class="line">    plt.plot([min_x, max_x], [y_min_x, y_max_x], <span class="string">'-g'</span>)</div><div class="line">    plt.xlabel(<span class="string">'X1'</span>); plt.ylabel(<span class="string">'X2'</span>)</div><div class="line">    plt.show()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">loadData</span><span class="params">()</span>:</span></div><div class="line">    data=np.loadtxt(<span class="string">'lr_nonlinear_data.txt'</span>)</div><div class="line">    train_x=data[:,<span class="number">0</span>:<span class="number">2</span>]</div><div class="line">    train_y=data[:,<span class="number">2</span>:]</div><div class="line">    train_x=np.insert(train_x,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> np.mat(train_x), np.mat(train_y)</div><div class="line"><span class="comment">## step 1: load data</span></div><div class="line"><span class="keyword">print</span> <span class="string">"step 1: load data..."</span></div><div class="line">train_x, train_y = loadData()</div><div class="line">test_x = train_x; test_y = train_y</div><div class="line"><span class="comment">## step 2: training...</span></div><div class="line"><span class="keyword">print</span> <span class="string">"step 2: training..."</span></div><div class="line">opts = &#123;<span class="string">'alpha'</span>: <span class="number">0.01</span>, <span class="string">'maxIter'</span>: <span class="number">500</span>, <span class="string">'optimizeType'</span>: <span class="string">'smoothStocGradDescent'</span>&#125;</div><div class="line">optimalTheta = trainLogRegres(train_x, train_y, opts)</div><div class="line"><span class="comment">## step 3: testing</span></div><div class="line"><span class="keyword">print</span> <span class="string">"step 3: testing..."</span></div><div class="line">accuracy = testLogRegres(optimalTheta, test_x, test_y)</div><div class="line"><span class="comment">## step 4: show the result</span></div><div class="line"><span class="keyword">print</span> <span class="string">"step 4: show the result..."</span></div><div class="line"><span class="keyword">print</span> <span class="string">'The classify accuracy is: %.3f%%'</span> % (accuracy * <span class="number">100</span>)</div><div class="line">showLogRegres(optimalTheta, train_x, train_y)</div><div class="line"><span class="keyword">print</span> sigmoid(train_x*optimalTheta)</div></pre></td></tr></table></figure>
+
+<p>全文到了这里其实还没有去说回归和分类的关系,如果认真阅读输出数据,你会发现<span class="math">\(\theta^{T}x\)</span>通过<span class="math">\(g(z)\)</span>映射后的结果<strong>要么是接近1,要么是接近0</strong>.其实我们还是在做回归,就是在拟合<span class="math">\(h_{\theta}(x)\)</span>这个函数,只是最后学习到得<span class="math">\(h_{\theta}(x)\)</span>使得数据分布很极端.如此以来,就达到了分类的效果.从图像上看,更神奇的是最终学到的<span class="math">\(\theta\)</span>构成的直线<span class="math">\(\theta_{0}+\theta_{1}x+\theta_{2}y=0\)</span>居然是将两类不同点分开的界限.<strong>逻辑回归就是用回归做分类</strong><br></p>
+<p>数据下载:<a href="http://pan.baidu.com/s/1bp2vMbH#path=%252FMatplotlib" target="_blank" rel="external">Data</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/07/26/2016-07-26-matplotlib-python/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">matplotlib基本用法</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/07/28/2016-07-28-work-use-ubuntu/">
+        <span class="next-text nav-default">Ubuntu日常应用技巧</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/28/2016-07-28-logistic-r-ml/"
+           data-title="逻辑回归" data-url="http://yoursite.com/2016/07/28/2016-07-28-logistic-r-ml/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

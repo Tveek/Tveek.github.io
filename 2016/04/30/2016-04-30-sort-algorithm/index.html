@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="排序"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/04/30/2016-04-30-sort-algorithm/"/>
+
+
+<meta name="description" content="本篇主要记录了排序算法，对于冒泡、选择、插入排序还是很好理解的，不过归并排序、堆排序、快速排序可能就不那么好理解好实现了。">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序">
+<meta property="og:url" content="http://yoursite.com/2016/04/30/2016-04-30-sort-algorithm/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="本篇主要记录了排序算法，对于冒泡、选择、插入排序还是很好理解的，不过归并排序、堆排序、快速排序可能就不那么好理解好实现了。">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/MergeSort.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/HeapSort1.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/heapsort2.png">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序">
+<meta name="twitter:description" content="本篇主要记录了排序算法，对于冒泡、选择、插入排序还是很好理解的，不过归并排序、堆排序、快速排序可能就不那么好理解好实现了。">
+<meta name="twitter:image" content="http://o6fdahi3n.bkt.clouddn.com/MergeSort.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 排序 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          排序
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Apr 30, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#归并排序"><span class="toc-text">归并排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#堆排序"><span class="toc-text">堆排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#快速排序"><span class="toc-text">快速排序</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>本篇主要记录了排序算法，对于冒泡、选择、插入排序还是很好理解的，不过归并排序、堆排序、快速排序可能就不那么好理解好实现了。 <a id="more"></a></p>
+<h1 id="归并排序">归并排序</h1>
+<p>题目要求：使用归并排序算法将一个乱序数组进行排序<br> 首先还是梳理一下归并排序是怎么回事，一句话<strong>先分再合</strong>，接下来看一个例子吧<br> <img src="http://o6fdahi3n.bkt.clouddn.com/MergeSort.png" alt="mergesortimg"> <br>每次从中间分开数组，直到数组个数为1，然后进行合并。显然，这个过程是<strong>递归的思想</strong>,哈哈，也许这个显然很不容易（因为递归并不是一个好理解的东西）。<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">// 这是一个打印数组所有值的函数</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_print</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); ++i)</div><div class="line">	&#123;</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;v[i]&lt;&lt;<span class="string">" "</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 这是合并两个有序序列的算法</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span> low,<span class="keyword">int</span> mid,<span class="keyword">int</span> high,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; temp)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">//v是一个数组，temp是一个临时数值</span></div><div class="line">    <span class="comment">//第一个有序序列指v[low]-v[mid]</span></div><div class="line">    <span class="comment">//第二个有序序列指v[mid+1]-v[high]</span></div><div class="line">	<span class="keyword">int</span> i=low;</div><div class="line">	<span class="keyword">int</span> j=mid+<span class="number">1</span>;</div><div class="line">	<span class="keyword">int</span> k=<span class="number">0</span>;</div><div class="line">    <span class="comment">//比较两个序列值的大小，然后将小的放到临时数值temp中</span></div><div class="line">	<span class="keyword">while</span>(i&lt;=mid &amp;&amp; j&lt;=high)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(v[i]&lt;v[j])</div><div class="line">			temp[k++]=v[i++];</div><div class="line">		<span class="keyword">else</span></div><div class="line">			temp[k++]=v[j++];</div><div class="line"></div><div class="line">	&#125;</div><div class="line">	<span class="comment">//将剩余的数也拷贝到临时数值temp中</span></div><div class="line">	<span class="keyword">while</span>(i&lt;=mid)</div><div class="line">		temp[k++]=v[i++];</div><div class="line">	<span class="keyword">while</span>(j&lt;=high)</div><div class="line">		temp[k++]=v[j++];</div><div class="line">	<span class="comment">// 将临时数组的值拷贝到原数组中。</span></div><div class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; k; i++)</div><div class="line">	&#123;</div><div class="line">    	<span class="comment">// 注意这里是low+i，很容易写成i的。</span></div><div class="line">		v[low+i] = temp[i];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">MergeSort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span> low ,<span class="keyword">int</span> high,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; temp)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> mid=low+(high-low)/<span class="number">2</span>;</div><div class="line">	<span class="keyword">if</span>(low&lt;high)</div><div class="line">	&#123;</div><div class="line">		MergeSort(v,low,mid,temp);</div><div class="line">		MergeSort(v,mid+<span class="number">1</span>,high,temp);</div><div class="line">		MergeArray(v,low,mid,high,temp);</div><div class="line">        <span class="comment">// 算法到这其实已经结束，下面的代码其实是为了测试递归过程用的</span></div><div class="line">		my_print(v);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//这是测试的主函数</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> a[]=&#123;<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">7</span>&#125;;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(a,a+<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; temp(<span class="number">8</span>);</div><div class="line">	MergeSort(v,<span class="number">0</span>,<span class="number">7</span>,temp);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>好了,代码也上了，我们还是来分析一下难搞的递归吧，下面是程序运行的结果。<br> <strong>3 4</strong> 9 6 2 1 8 7 <br> 3 4 <strong>6 9</strong> 2 1 8 7 <br> <strong>3 4 6 9</strong> 2 1 8 7 <br> 3 4 6 9 <strong>1 2</strong> 8 7 <br> 3 4 6 9 1 2 <strong>7 8</strong> <br> 3 4 6 9 <strong>1 2 7 8</strong> <br> <strong>1 2 3 4 6 7 8 9</strong> <br> <strong>其实每一次拆分对应了一次合并，这个递归过程其实就不断的拆分，然后将对应的拆分合并。</strong></p>
+<h1 id="堆排序">堆排序</h1>
+<p>题目要求：使用堆排序算法将一个乱序数组进行排序。<br> 有如下一位数组，上方的数是数组的下标:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">0</th>
+<th align="left">1</th>
+<th align="left">2</th>
+<th align="left">3</th>
+<th align="left">4</th>
+<th align="left">5</th>
+<th align="left">6</th>
+<th align="left">7</th>
+<th align="left">8</th>
+<th align="left">9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">4</td>
+<td align="left">5</td>
+<td align="left">1</td>
+<td align="left">9</td>
+<td align="left">8</td>
+<td align="left">6</td>
+<td align="left">2</td>
+<td align="left">7</td>
+<td align="left">10</td>
+</tr>
+</tbody>
+</table>
+<p>其实数组可以对应一个二叉树(也就是一个堆)：<br> <img src="http://o6fdahi3n.bkt.clouddn.com/HeapSort1.png" alt="heapsortimg1"> <br><strong>众所周知，最大堆的堆顶一定是这个堆中最大的</strong>,那么算法思路如下：<br> <strong>①将数组调整为最大堆</strong><br> <strong>②将堆顶元素（数组第一个值）和堆底元素（数值的最后一个值）交换（也就是把最大的数放到数组的最后一个位置），同时将数组的长度减1</strong><br> <strong>③重复①②（每次都将当前数组最大值放到当前数组最后的位置），直到数值长度为0</strong><br> 这里列出第一次调整堆（也可以当成构建最大堆）的结果：<br> <img src="http://o6fdahi3n.bkt.clouddn.com/heapsort2.png" alt="heapsortimg2"> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">//调整堆</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">HeapAdjust</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">array</span>,<span class="keyword">int</span> s,<span class="keyword">int</span> length)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> temp = <span class="built_in">array</span>[s];<span class="comment">//待调整的元素</span></div><div class="line">	<span class="keyword">int</span> child = <span class="number">2</span>*s+<span class="number">1</span>;<span class="comment">//待调整节点的左孩子的位置</span></div><div class="line"></div><div class="line">	<span class="comment">//开始调整</span></div><div class="line">	<span class="keyword">while</span>(child &lt; length)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">//如果右孩子大于左孩子，找到比当前待调整节点大的孩子节点 </span></div><div class="line">		<span class="keyword">if</span>(child+<span class="number">1</span> &lt; length&amp;&amp; <span class="built_in">array</span>[child] &lt; <span class="built_in">array</span>[child+<span class="number">1</span>])</div><div class="line">			child++;</div><div class="line">		<span class="comment">//如果较大的孩子大于待调整的节点 </span></div><div class="line">		<span class="keyword">if</span>(<span class="built_in">array</span>[s] &lt; <span class="built_in">array</span>[child])</div><div class="line">		&#123;</div><div class="line">			<span class="built_in">array</span>[s] = <span class="built_in">array</span>[child];<span class="comment">//那么较大的节点向上移</span></div><div class="line">			s = child;<span class="comment">//更新待调整节点的位置</span></div><div class="line">			child = <span class="number">2</span>*s+<span class="number">1</span>;<span class="comment">//更新待调整节点的左孩子 </span></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		<span class="built_in">array</span>[s] = temp;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//堆排序</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">HeapSort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">array</span>,<span class="keyword">int</span> length)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="comment">//构造最大堆</span></div><div class="line">	<span class="keyword">for</span>(i=(length<span class="number">-1</span>)/<span class="number">2</span>;i&gt;=<span class="number">0</span>;i--)</div><div class="line">	&#123;</div><div class="line">		HeapAdjust(<span class="built_in">array</span>,i,length);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//从最后一个元素开始对序列进行调整</span></div><div class="line">	<span class="keyword">for</span>(i=length<span class="number">-1</span>;i&gt;<span class="number">0</span>;i--)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">//交换堆顶元素和堆中最后一个元素</span></div><div class="line">		<span class="keyword">int</span> tmp = <span class="built_in">array</span>[i];</div><div class="line">		<span class="built_in">array</span>[i] = <span class="built_in">array</span>[<span class="number">0</span>];</div><div class="line">		<span class="built_in">array</span>[<span class="number">0</span>] = tmp;</div><div class="line">		<span class="comment">//每次交换元素之后，就需要重新调整堆</span></div><div class="line">		HeapAdjust(<span class="built_in">array</span>,<span class="number">0</span>,i);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> <span class="built_in">array</span>[]=&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">10</span>&#125;;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="built_in">array</span>,<span class="built_in">array</span>+<span class="keyword">sizeof</span>(<span class="built_in">array</span>)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">	HeapSort(v,<span class="number">10</span>);</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;v[i]&lt;&lt;<span class="string">" "</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="快速排序">快速排序</h1>
+<p>快排算法实现步骤：<br> <strong>第一步：选择数组首位为基准点</strong><br> <strong>第二步：设立两个指针，一个用于遍历数组，另一个指针m用于指向比基准点小的值应该放的位置</strong><br> <strong>第三步：遍历完数组后，将首位的基准点和最后m指向的值进行交换，返回m。这样一次快排就完成了</strong><br> <strong>第四步：将m作为分界点，将原数组分成两个。重复第二步、第三步，直到数组大小为1，整个快排就结束了</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Find_pos</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">//该函数的目的是找到基准点最终应该放在数组中的哪个位置。</span></div><div class="line">	<span class="comment">//这里选择数组的首位为基准点</span></div><div class="line"></div><div class="line">	<span class="comment">//比基准点小的值应该放的位置</span></div><div class="line">	<span class="keyword">int</span> m=low;</div><div class="line"></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = low+<span class="number">1</span>; i &lt;= high; ++i)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(v[i]&lt;v[low])</div><div class="line">		&#123;</div><div class="line">			swap(v[++m],v[i]);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">	<span class="comment">//将基准点放到分界点</span></div><div class="line">	<span class="comment">//因为m始终指向比基准点大的值或者基准点本身</span></div><div class="line">	swap(v[m],v[low]);</div><div class="line">	<span class="keyword">return</span> m;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">QuickSort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span> low ,<span class="keyword">int</span> high)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>(low&lt;high)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">int</span> pos=Find_pos(v,low,high);</div><div class="line">		QuickSort(v,low,pos);</div><div class="line">		QuickSort(v,pos+<span class="number">1</span>,high);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> <span class="built_in">array</span>[]=&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">10</span>&#125;;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="built_in">array</span>,<span class="built_in">array</span>+<span class="keyword">sizeof</span>(<span class="built_in">array</span>)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</div><div class="line">	QuickSort(v,<span class="number">0</span>,<span class="number">9</span>);</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;v[i]&lt;&lt;<span class="string">" "</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/04/23/2016-04-23-array-algorithm/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">数组算法问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/02/2016-05-02-search-algorithm/">
+        <span class="next-text nav-default">查找</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/30/2016-04-30-sort-algorithm/"
+           data-title="排序" data-url="http://yoursite.com/2016/04/30/2016-04-30-sort-algorithm/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

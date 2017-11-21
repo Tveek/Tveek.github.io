@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="利用Caffe中的Lenet训练kaggle上手写体数据集"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/10/2016-10-10-kaggle_mnist-caffe/"/>
+
+
+<meta name="description" content="caffe提供了很多深度学习网络，例如Lenet,Imagenet,Alenet.但是最重要的我们会利用这些网络训练自己的数据集以及调参数，甚至发明自己net．本篇博文主要是记录利用caffe中的Lenet训练kaggle中的手写体数据集.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Caffe中的Lenet训练kaggle上手写体数据集">
+<meta property="og:url" content="http://yoursite.com/2016/10/10/2016-10-10-kaggle_mnist-caffe/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="caffe提供了很多深度学习网络，例如Lenet,Imagenet,Alenet.但是最重要的我们会利用这些网络训练自己的数据集以及调参数，甚至发明自己net．本篇博文主要是记录利用caffe中的Lenet训练kaggle中的手写体数据集.">
+<meta property="og:updated_time" content="2017-04-17T05:26:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Caffe中的Lenet训练kaggle上手写体数据集">
+<meta name="twitter:description" content="caffe提供了很多深度学习网络，例如Lenet,Imagenet,Alenet.但是最重要的我们会利用这些网络训练自己的数据集以及调参数，甚至发明自己net．本篇博文主要是记录利用caffe中的Lenet训练kaggle中的手写体数据集.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 利用Caffe中的Lenet训练kaggle上手写体数据集 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          利用Caffe中的Lenet训练kaggle上手写体数据集
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 10, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mnist数据集"><span class="toc-text">mnist数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lenet数据处理和网络构建"><span class="toc-text">Lenet数据处理和网络构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据"><span class="toc-text">数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#训练文件"><span class="toc-text">训练文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lenet训练"><span class="toc-text">Lenet训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kaggle数据测试"><span class="toc-text">kaggle数据测试</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>caffe提供了很多深度学习网络，例如Lenet,Imagenet,Alenet.但是最重要的我们会利用这些网络训练自己的数据集以及调参数，甚至发明自己net．本篇博文主要是记录利用caffe中的Lenet训练kaggle中的手写体数据集. <a id="more"></a></p>
+<h2 id="mnist数据集">mnist数据集</h2>
+<p>首先需要关注一下kaggle mnist数据比赛的<strong>数据格式</strong>信息:<br> <a href="https://www.kaggle.com/c/digit-recognizer/data" target="_blank" rel="external">kaggle 手写体比赛</a><br> 大家可以从上面网站下载到本地，考虑到下载慢，这里百度云分享链接:<br> <a href="https://pan.baidu.com/s/1nvrVWV3" target="_blank" rel="external">kaggle mnist百度云链接</a></p>
+<h2 id="lenet数据处理和网络构建">Lenet数据处理和网络构建</h2>
+<p>为了与现有的caffe例子相融合，保存caffe源码的风格,有如下配置</p>
+<h3 id="数据">数据</h3>
+<p>在caffe/data目录下新建文件夹kaggle_mnist，并且将下载好的<strong>train.csv,test.csv</strong>,保存在此．</p>
+<h3 id="训练文件">训练文件</h3>
+<p>首先在caffe/examples目录下新建文件夹kaggle_mnist.<br> <strong>1.csv数据转HDF5</strong><br> 首先声明caffe不止可以接收HDF5数据，欲知更多，移步官网.<br> 以下python脚本实现数据转换的功能，并按caffe　example风格放置各个文件．该文件命名为<strong>create_mnist.py</strong>,放置在<strong>examples/kaggle_mnist</strong>文件夹下,<strong>这里提醒一下，训练只用到train.csv中的数据,代码中test准确的表达应该是validation.这里只是把train.csv中的数据分为两部分了</strong> <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> logging</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> h5py</div><div class="line"></div><div class="line"></div><div class="line">DATA_ROOT = <span class="string">'../../data/kaggle_mnist'</span></div><div class="line">os.mkdir(<span class="string">'mnist_train_hdf5'</span>)</div><div class="line">os.mkdir(<span class="string">'mnist_test_hdf5'</span>)</div><div class="line">join = os.path.join</div><div class="line">TRAIN = join(DATA_ROOT, <span class="string">'train.csv'</span>)</div><div class="line">DIR_TRAIN=<span class="string">'mnist_train_hdf5'</span></div><div class="line">DIR_TEST=<span class="string">'mnist_test_hdf5'</span></div><div class="line">train_file = join(DIR_TRAIN, <span class="string">'mnist_train.h5'</span>)</div><div class="line">test_file = join(DIR_TEST, <span class="string">'mnist_test.h5'</span>)</div><div class="line">train_file_txt = join(DIR_TRAIN, <span class="string">'mnist_train.txt'</span>)</div><div class="line">test_file_txt = join(DIR_TEST, <span class="string">'mnist_test.txt'</span>)</div><div class="line"></div><div class="line"><span class="comment"># logger</span></div><div class="line">logger = logging.getLogger()</div><div class="line">logger.setLevel(logging.DEBUG)</div><div class="line">sh = logging.StreamHandler()</div><div class="line">sh.setLevel(logging.DEBUG)</div><div class="line">formatter = logging.Formatter(<span class="string">'%(asctime)s - %(levelname)s - %(message)s'</span>)</div><div class="line">sh.setFormatter(formatter)</div><div class="line">logger.addHandler(sh)</div><div class="line"></div><div class="line"><span class="comment"># load data from train.csv</span></div><div class="line">logger.info(<span class="string">'Load data from %s'</span>, TRAIN)</div><div class="line">df = pd.read_csv(TRAIN)</div><div class="line">data = df.values</div><div class="line"></div><div class="line">logger.info(<span class="string">'Get %d Rows in dataset'</span>, len(data))</div><div class="line"></div><div class="line"><span class="comment"># random shuffle</span></div><div class="line">np.random.shuffle(data)</div><div class="line"></div><div class="line"><span class="comment"># all dataset</span></div><div class="line">labels = data[:, <span class="number">0</span>]</div><div class="line">images = data[:, <span class="number">1</span>:]</div><div class="line"></div><div class="line"><span class="comment"># process data</span></div><div class="line">images = images.reshape((len(images), <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line">images = images / <span class="number">255.</span></div><div class="line"></div><div class="line"><span class="comment"># train dataset number</span></div><div class="line">trainset = len(labels) * <span class="number">3</span> / <span class="number">4</span></div><div class="line"></div><div class="line"><span class="comment"># train dataset</span></div><div class="line">labels_train = labels[:trainset]</div><div class="line">images_train = images[:trainset]</div><div class="line"><span class="comment"># test dataset</span></div><div class="line">labels_test = labels[trainset:]</div><div class="line">images_test = images[trainset:]</div><div class="line"></div><div class="line"><span class="comment"># write to hdf5 and txt</span></div><div class="line"><span class="keyword">if</span> os.path.exists(train_file):</div><div class="line">    os.remove(train_file)</div><div class="line"><span class="keyword">if</span> os.path.exists(test_file):</div><div class="line">    os.remove(test_file)</div><div class="line"></div><div class="line">logger.info(<span class="string">'Write train dataset to %s'</span>, train_file)</div><div class="line"><span class="keyword">with</span> h5py.File(train_file, <span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    f[<span class="string">'label'</span>] = labels_train.astype(np.float32)</div><div class="line">    f[<span class="string">'data'</span>] = images_train.astype(np.float32)</div><div class="line"></div><div class="line">train_file = join(<span class="string">'examples/kaggle_mnist/'</span>, train_file)</div><div class="line"><span class="keyword">with</span> open(train_file_txt, <span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    print(train_file, file = f)</div><div class="line"></div><div class="line">logger.info(<span class="string">'Write test dataset to %s'</span>, test_file)</div><div class="line"><span class="keyword">with</span> h5py.File(test_file, <span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    f[<span class="string">'label'</span>] = labels_test.astype(np.float32)</div><div class="line">    f[<span class="string">'data'</span>] = images_test.astype(np.float32)</div><div class="line"></div><div class="line">test_file = join(<span class="string">'examples/kaggle_mnist/'</span>, test_file)</div><div class="line"><span class="keyword">with</span> open(test_file_txt, <span class="string">'w'</span>) <span class="keyword">as</span> f:</div><div class="line">    print(test_file, file = f)</div><div class="line"></div><div class="line">logger.info(<span class="string">'Done'</span>)</div></pre></td></tr></table></figure></p>
+<p><strong>2.lenet网路配置</strong><br> 从/examples/mnist复制<strong>lenet_train_test.prototxt</strong>到<strong>/examples/kaggle_mnist</strong>,并修改数据层的内容,整个文件如下:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div></pre></td><td class="code"><pre><div class="line">name: &quot;LeNet&quot;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;mnist&quot;</div><div class="line">  type: &quot;HDF5Data&quot;</div><div class="line">  top: &quot;data&quot;</div><div class="line">  top: &quot;label&quot;</div><div class="line">  include &#123;</div><div class="line">    phase: TRAIN</div><div class="line">  &#125;</div><div class="line">  hdf5_data_param &#123;</div><div class="line">    source: &quot;examples/kaggle_mnist/mnist_train_hdf5/mnist_train.txt&quot;</div><div class="line">    batch_size: 64</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;mnist&quot;</div><div class="line">  type: &quot;HDF5Data&quot;</div><div class="line">  top: &quot;data&quot;</div><div class="line">  top: &quot;label&quot;</div><div class="line">  include &#123;</div><div class="line">    phase: TEST</div><div class="line">  &#125;</div><div class="line">  hdf5_data_param &#123;</div><div class="line">    source: &quot;examples/kaggle_mnist/mnist_test_hdf5/mnist_test.txt&quot;</div><div class="line">    batch_size: 100</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;conv1&quot;</div><div class="line">  type: &quot;Convolution&quot;</div><div class="line">  bottom: &quot;data&quot;</div><div class="line">  top: &quot;conv1&quot;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 1</div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 2</div><div class="line">  &#125;</div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: 20</div><div class="line">    kernel_size: 5</div><div class="line">    stride: 1</div><div class="line">    weight_filler &#123;</div><div class="line">      type: &quot;xavier&quot;</div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: &quot;constant&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;pool1&quot;</div><div class="line">  type: &quot;Pooling&quot;</div><div class="line">  bottom: &quot;conv1&quot;</div><div class="line">  top: &quot;pool1&quot;</div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX</div><div class="line">    kernel_size: 2</div><div class="line">    stride: 2</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;conv2&quot;</div><div class="line">  type: &quot;Convolution&quot;</div><div class="line">  bottom: &quot;pool1&quot;</div><div class="line">  top: &quot;conv2&quot;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 1</div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 2</div><div class="line">  &#125;</div><div class="line">  convolution_param &#123;</div><div class="line">    num_output: 50</div><div class="line">    kernel_size: 5</div><div class="line">    stride: 1</div><div class="line">    weight_filler &#123;</div><div class="line">      type: &quot;xavier&quot;</div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: &quot;constant&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;pool2&quot;</div><div class="line">  type: &quot;Pooling&quot;</div><div class="line">  bottom: &quot;conv2&quot;</div><div class="line">  top: &quot;pool2&quot;</div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX</div><div class="line">    kernel_size: 2</div><div class="line">    stride: 2</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;ip1&quot;</div><div class="line">  type: &quot;InnerProduct&quot;</div><div class="line">  bottom: &quot;pool2&quot;</div><div class="line">  top: &quot;ip1&quot;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 1</div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 2</div><div class="line">  &#125;</div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: 500</div><div class="line">    weight_filler &#123;</div><div class="line">      type: &quot;xavier&quot;</div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: &quot;constant&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;relu1&quot;</div><div class="line">  type: &quot;ReLU&quot;</div><div class="line">  bottom: &quot;ip1&quot;</div><div class="line">  top: &quot;ip1&quot;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;ip2&quot;</div><div class="line">  type: &quot;InnerProduct&quot;</div><div class="line">  bottom: &quot;ip1&quot;</div><div class="line">  top: &quot;ip2&quot;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 1</div><div class="line">  &#125;</div><div class="line">  param &#123;</div><div class="line">    lr_mult: 2</div><div class="line">  &#125;</div><div class="line">  inner_product_param &#123;</div><div class="line">    num_output: 10</div><div class="line">    weight_filler &#123;</div><div class="line">      type: &quot;xavier&quot;</div><div class="line">    &#125;</div><div class="line">    bias_filler &#123;</div><div class="line">      type: &quot;constant&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;accuracy&quot;</div><div class="line">  type: &quot;Accuracy&quot;</div><div class="line">  bottom: &quot;ip2&quot;</div><div class="line">  bottom: &quot;label&quot;</div><div class="line">  top: &quot;accuracy&quot;</div><div class="line">  include &#123;</div><div class="line">    phase: TEST</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">layer &#123;</div><div class="line">  name: &quot;loss&quot;</div><div class="line">  type: &quot;SoftmaxWithLoss&quot;</div><div class="line">  bottom: &quot;ip2&quot;</div><div class="line">  bottom: &quot;label&quot;</div><div class="line">  top: &quot;loss&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>3.solver配置</strong><br> 同样从/examples/mnist复制到<strong>lenet_solver.prototxt</strong>到<strong>/examples/kaggle_mnist</strong>,只要将net处修改即可,所有类容如下:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># The train/test net protocol buffer definition</div><div class="line">net: &quot;examples/kaggle_mnist/lenet_train_test.prototxt&quot;</div><div class="line"># test_iter specifies how many forward passes the test should carry out.</div><div class="line"># In the case of MNIST, we have test batch size 100 and 100 test iterations,</div><div class="line"># covering the full 10,000 testing images.</div><div class="line">test_iter: 100</div><div class="line"># Carry out testing every 500 training iterations.</div><div class="line">test_interval: 500</div><div class="line"># The base learning rate, momentum and the weight decay of the network.</div><div class="line">base_lr: 0.01</div><div class="line">momentum: 0.9</div><div class="line">weight_decay: 0.0005</div><div class="line"># The learning rate policy</div><div class="line">lr_policy: &quot;inv&quot;</div><div class="line">gamma: 0.0001</div><div class="line">power: 0.75</div><div class="line"># Display every 100 iterations</div><div class="line">display: 100</div><div class="line"># The maximum number of iterations</div><div class="line">max_iter: 10000</div><div class="line"># snapshot intermediate results</div><div class="line">snapshot: 5000</div><div class="line">snapshot_prefix: &quot;examples/kaggle_mnist/lenet&quot;</div><div class="line"># solver mode: CPU or GPU</div><div class="line">solver_mode: CPU</div></pre></td></tr></table></figure></p>
+<p><strong>4.训练文件</strong><br> 在<strong>examples/kaggle_mnist</strong>下新建train_lenet.sh,内容如下:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env sh</div><div class="line">set -e</div><div class="line"></div><div class="line">./build/tools/caffe train -solver=examples/kaggle_mnist/lenet_solver.prototxt -weights examples/mnist/lenet_iter_10000.caffemodel $@</div></pre></td></tr></table></figure></p>
+<p>值得注意的是，这里其实是在<strong>fine tunning</strong>,因为这里用到了caffe自带mnist训练出来的模型，也就是这一句:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-weights examples/mnist/lenet_iter_10000.caffemodel</div></pre></td></tr></table></figure></p>
+<h2 id="lenet训练">Lenet训练</h2>
+<p>这一步很简单，只要在caffe根目录下执行:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./examples/kaggle_mnist/train_lenet.sh</div></pre></td></tr></table></figure></p>
+<p>我的机器大概用了10分钟，最后就出来带<strong>.caffemodel</strong>后缀的model.</p>
+<h2 id="kaggle数据测试">kaggle数据测试</h2>
+<p>为了上传数据到kaggle,我们必须用最后训练出来的model预测一下<strong>test.csv</strong>中的数据.这里用caffe的python接口做的预测,完整的代码如下:<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> logging</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> caffe</div><div class="line"></div><div class="line"></div><div class="line">DATA_ROOT = <span class="string">'../../data/kaggle_mnist'</span></div><div class="line">MODEL_ROOT = <span class="string">'./'</span></div><div class="line">join = os.path.join</div><div class="line">TEST = join(DATA_ROOT, <span class="string">'test.csv'</span>)</div><div class="line">OUTPUT = join(DATA_ROOT, <span class="string">'result.csv'</span>)</div><div class="line">CAFFE_MODEL = join(MODEL_ROOT, <span class="string">'lenet_iter_10000.caffemodel'</span>)</div><div class="line">CAFFE_SOLVER = join(MODEL_ROOT, <span class="string">'deploy.prototxt'</span>)</div><div class="line"></div><div class="line"><span class="comment"># logger</span></div><div class="line">logger = logging.getLogger()</div><div class="line">logger.setLevel(logging.DEBUG)</div><div class="line">sh = logging.StreamHandler()</div><div class="line">sh.setLevel(logging.DEBUG)</div><div class="line">formatter = logging.Formatter(<span class="string">'%(asctime)s - %(levelname)s - %(message)s'</span>)</div><div class="line">sh.setFormatter(formatter)</div><div class="line">logger.addHandler(sh)</div><div class="line"></div><div class="line"><span class="comment"># load test dataset</span></div><div class="line">logger.info(<span class="string">'Load test dataset from %s'</span>, TEST)</div><div class="line">df = pd.read_csv(TEST)</div><div class="line">data = df.values</div><div class="line"></div><div class="line">data = data.reshape((len(data), <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>))</div><div class="line">data = data / <span class="number">255.</span></div><div class="line"></div><div class="line"><span class="comment"># set caffe net</span></div><div class="line">net = caffe.Classifier(CAFFE_SOLVER, CAFFE_MODEL)</div><div class="line"></div><div class="line"><span class="comment"># predict</span></div><div class="line">logger.info(<span class="string">'Start predict'</span>)</div><div class="line">BATCH_SIZE = <span class="number">100</span></div><div class="line">iter_k = <span class="number">0</span></div><div class="line">labels = []</div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    logger.info(<span class="string">'ITER %d'</span>, iter_k)</div><div class="line">    batch = data[iter_k*BATCH_SIZE: (iter_k+<span class="number">1</span>)*BATCH_SIZE]</div><div class="line">    <span class="keyword">if</span> batch.size == <span class="number">0</span>:</div><div class="line">        <span class="keyword">break</span></div><div class="line">    result = net.predict(batch)</div><div class="line">    <span class="keyword">for</span> label <span class="keyword">in</span> np.argmax(result, <span class="number">1</span>):</div><div class="line">        labels.append(label)</div><div class="line">    iter_k = iter_k + <span class="number">1</span></div><div class="line">logger.info(<span class="string">'Prediction Done'</span>)</div><div class="line"></div><div class="line"><span class="comment"># write to file</span></div><div class="line">logger.info(<span class="string">'Save result to %s'</span>, OUTPUT)</div><div class="line"><span class="keyword">if</span> os.path.exists(OUTPUT):</div><div class="line">    os.remove(OUTPUT)</div><div class="line"><span class="keyword">with</span> open(OUTPUT, <span class="string">'w'</span>) <span class="keyword">as</span> fd:</div><div class="line">    fd.write(<span class="string">'ImageId,Label\n'</span>)</div><div class="line">    <span class="keyword">for</span> idx, label <span class="keyword">in</span> enumerate(labels):</div><div class="line">        fd.write(str(idx+<span class="number">1</span>))</div><div class="line">        fd.write(<span class="string">','</span>)</div><div class="line">        fd.write(str(label))</div><div class="line">        fd.write(<span class="string">'\n'</span>)</div></pre></td></tr></table></figure></p>
+<p>最后出来的预测结果保存在caffe/data/kaggle_mnist/result.csv中,只要将该文件上传到kaggle上就可以知道你的预测的准确率了.</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/10/2016-10-10-install-caffe/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Ubuntu14.04 Caffe 安装</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/11/2016-10-11-stl-container1-cpp/">
+        <span class="next-text nav-default">C++STL容器之简介</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/10/2016-10-10-kaggle_mnist-caffe/"
+           data-title="利用Caffe中的Lenet训练kaggle上手写体数据集" data-url="http://yoursite.com/2016/10/10/2016-10-10-kaggle_mnist-caffe/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

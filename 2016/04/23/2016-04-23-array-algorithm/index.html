@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="数组算法问题"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/04/23/2016-04-23-array-algorithm/"/>
+
+
+<meta name="description" content="算法不是一蹴而就的，需要扎实的基本功。不仅要懂得算法的基本思想过程，更重要的是能动手实现。本篇博客主要说一些数组算法的小问题。">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组算法问题">
+<meta property="og:url" content="http://yoursite.com/2016/04/23/2016-04-23-array-algorithm/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="算法不是一蹴而就的，需要扎实的基本功。不仅要懂得算法的基本思想过程，更重要的是能动手实现。本篇博客主要说一些数组算法的小问题。">
+<meta property="og:updated_time" content="2016-08-26T15:03:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数组算法问题">
+<meta name="twitter:description" content="算法不是一蹴而就的，需要扎实的基本功。不仅要懂得算法的基本思想过程，更重要的是能动手实现。本篇博客主要说一些数组算法的小问题。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 数组算法问题 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          数组算法问题
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Apr 23, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊数组中的查找"><span class="toc-text">特殊数组中的查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第k大问题"><span class="toc-text">第K大问题</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>算法不是一蹴而就的，需要扎实的基本功。不仅要懂得算法的基本思想过程，更重要的是能动手实现。本篇博客主要说一些数组算法的小问题。 <a id="more"></a></p>
+<p><strong>本篇使用C++,头文件如下</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div></pre></td></tr></table></figure></p>
+<h2 id="特殊数组中的查找">特殊数组中的查找</h2>
+<p>题目要求：<br> 一个整数数组中有一个元素出现了一次，其他元素都出现了两次，使用最小的时间复杂度找出出现一次的数<br> 拓展问题：<br> （1）如果有两个数均出现了一次，其他都出现了两次，如何查找这两个数？<br> （2）如果一个数组中有一个数出现了一次，其他数都出现了三次，如何找到出现一次的数？</p>
+<p>如果没有位操作在算法上应用的思想，这个问题还是蛮难的。废话少说，直接切入主题。<br> <strong>众所周知，两个相同的数异或结果为零，零与任何数异或为其本身。</strong>那么这个问题就很好解决了： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">SelectNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> res=v[<span class="number">0</span>];</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; v.size(); i++)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">/* 异或运算，相同为0,不同为1 */</span></div><div class="line">		res ^=v[i];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> res;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对于扩展（1），要是能把它<strong>变成两个原问题</strong>就好了。哈哈，问题就是这么解决的。<br> <strong>第一步：所有的数异或，其实就是那两个不同的数异或的结果</strong><br> <strong>第二步：找这两个数，出现第一位不同的二进制位的位置</strong><br> <strong>第三步：根据这个二进制位将原数组分成两个数组，且这两个数组都满足原题目的要求</strong><br> <strong>第四步：运用原题目的方法找出这两个数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">SelectNumber2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span>&amp; num1,<span class="keyword">int</span>&amp; num2)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> tmp=<span class="number">0</span>;</div><div class="line">	<span class="keyword">int</span> j;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">/* 求出两个数的异或结果 */</span></div><div class="line">		tmp^=v[i];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//找到两个数第一个不同的位</span></div><div class="line">	<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; <span class="keyword">sizeof</span>(<span class="keyword">int</span>)*<span class="number">8</span>; j++)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(((tmp&gt;&gt;j)&amp;<span class="number">1</span>)==<span class="number">1</span>)</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	num1=<span class="number">0</span>;</div><div class="line">	num2=<span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="comment">//按照第j位不同将数据分成两类（显然所求的两个数不在同一类，而且相同的数还在同一类）</span></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">//无论是等于0还是等于1，都不影响分类</span></div><div class="line">		<span class="keyword">if</span>(((v[i]&gt;&gt;j)&amp;<span class="number">1</span>)==<span class="number">0</span>)</div><div class="line">			num1^=v[i];</div><div class="line">		<span class="keyword">else</span></div><div class="line">			num2^=v[i];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<p>对于扩展（2）,这个问题很不好解，因为前面的方法不顶用了。不过要是深刻了解到扩展（1）的精髓，<strong>那就是利用位操作对数组进行分类</strong>，那是可以解决的。还是先来一个例子吧。<br> 数组：2 2 2 3 3 3 4. 首先用第一位（从低到高）来分类(<strong>与运算</strong>)：<br>   2         3        5<br> 0010      0011     0101<br> 0001      0001     0001</p>
+<hr>
+<p>0000      0001     0001<br> <strong>根据相与的结果，可以把3和5分为①类，2分为另②类。通过类成员的个数是否为3的倍数来判断哪个类是我们需要的，显然这里是①类</strong><br> 然后用第二位对①类来分类，<br>   3         5<br> 0011      0101<br> 0010      0010</p>
+<hr>
+<p>0010      0000<br> <strong>判断结果是否为零，来进行分类（如果第二位无法分类，则用第三位、第四位…..）,通过反复分类，最后所求的数分在一类，且类成员个数为1（就是它本身）</strong><br> 说了这么多，还是上代码吧： <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">SelectNumber3</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> i,j;</div><div class="line">	<span class="keyword">int</span> low=<span class="number">0</span>,high=v.size()<span class="number">-1</span>;</div><div class="line">	<span class="keyword">int</span> bit =<span class="number">1</span>;</div><div class="line"></div><div class="line">	<span class="comment">//通过某一位的值将数组分为两部分，其中一部分包含了待找的数 另一部分不包含</span></div><div class="line">	<span class="keyword">while</span>(low &lt;= high)</div><div class="line">	&#123;</div><div class="line">		<span class="comment">//由题意必然会收敛到low==high</span></div><div class="line">		<span class="keyword">if</span>(low == high)</div><div class="line">			<span class="keyword">return</span> v[low];</div><div class="line">		i = low<span class="number">-1</span>;</div><div class="line"></div><div class="line">		<span class="comment">//把数值分成两类且相同的数必然在同一类，i为分界线.</span></div><div class="line">		<span class="keyword">for</span>(j = low;j&lt;= high;j++)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">if</span>((v[j]&amp;bit) == <span class="number">0</span>)</div><div class="line">			&#123;</div><div class="line">				i++;</div><div class="line">				swap(v[i],v[j]);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//重新得到包含所求元素的数值，显然长度减少了.</span></div><div class="line">		<span class="keyword">if</span>(i &gt;= low)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">if</span>((i-low+<span class="number">1</span>)%<span class="number">3</span> == <span class="number">0</span>)</div><div class="line">				low = i+<span class="number">1</span>;</div><div class="line">			<span class="keyword">else</span></div><div class="line">				high =i;</div><div class="line">		&#125; </div><div class="line">		bit = bit&lt;&lt;<span class="number">1</span>;</div><div class="line">	&#125; </div><div class="line">	<span class="comment">//保存编译时不报没有返回值的错，其实用于运行不到这一步.</span></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="第k大问题">第K大问题</h2>
+<p>题目要求：在一个整数数组中，查找该数组中第K大的元素。<br> 拓展问题：Top K问题！</p>
+<p>这两个问题都是计算机界经典问题。对于原题目，思路是这样的:<br> 第一步：选择一个基准点，进行快排（也就是比它大的放在左边，比它小的放在右边），同时记录比它大的个数count;<br> 第二步：然后比较k与count+1的大小，若k小，则所求的值在左边，接着对左边进行递归，若k大，则所求的值在右边，接着对右边进行递归，若相等，返回该值。</p>
+<p>上面的思路很清晰，这里的关键是快排算法如何去实现：<br> <strong>第一步：首先将基准点交换到数组的首位，使其在比较过程中不参与交换</strong><br> <strong>第二步：设立两个指针，一个用于遍历数组，另一个指针m用于指向比基准点大的值应该放的位置</strong><br> <strong>第三步：遍历完数组后，将首位的基准点和最后m指向的值进行交换，这样一次快排就完成了</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">Find_k</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v,<span class="keyword">int</span> low,<span class="keyword">int</span> high,<span class="keyword">int</span> k)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>(k&lt;=<span class="number">0</span>)</div><div class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">	<span class="keyword">if</span>(k&gt;high-low+<span class="number">1</span>)</div><div class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">	<span class="comment">//随机初始化一个基准点</span></div><div class="line">	<span class="keyword">int</span> pivot = low+rand()%(high-low+<span class="number">1</span>);</div><div class="line">	<span class="comment">//记录比基准点大的数的个数。</span></div><div class="line">	<span class="keyword">int</span> count=<span class="number">0</span>;</div><div class="line">	<span class="comment">//比基准点大的值应该放的位置</span></div><div class="line">	<span class="keyword">int</span> m=low;</div><div class="line">	<span class="comment">//将基准放在数值的最前面。</span></div><div class="line">	swap(v[pivot],v[low]);</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = low+<span class="number">1</span>; i &lt;= high; ++i)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(v[i]&gt;v[low])</div><div class="line">		&#123;</div><div class="line">			swap(v[++m],v[i]);</div><div class="line">			count++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//将基准点放到分界点</span></div><div class="line">	<span class="comment">//因为m始终指向比基准点大的值或者基准点本身</span></div><div class="line">	swap(v[m],v[low]);</div><div class="line">	<span class="keyword">if</span>(k&lt;(count+<span class="number">1</span>))</div><div class="line">		Find_k(v,low,m<span class="number">-1</span>,k);</div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(k&gt;(count+<span class="number">1</span>))</div><div class="line">		Find_k(v,m+<span class="number">1</span>,high,k-(count+<span class="number">1</span>));</div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="keyword">return</span> v[m];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<p>对于拓展问题，使用C++ STL模板中已有的数据结构<strong>堆和最大堆排序算法</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//查找最小的K个数</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">FindMinTopK</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; vec,<span class="keyword">int</span> k)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; heap(vec.begin(),vec.begin()+k);</div><div class="line">	make_heap(heap.begin(),heap.end());</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="comment">//开始处理剩余的数据</span></div><div class="line">	<span class="keyword">for</span>(i =k;i&lt;vec.size();i++)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span>(vec[i]&lt;heap[<span class="number">0</span>])</div><div class="line">		&#123;</div><div class="line">			pop_heap(heap.begin(),heap.end());</div><div class="line">			heap.pop_back();</div><div class="line">			heap.push_back(vec[i]);</div><div class="line">			push_heap(heap.begin(),heap.end());</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/04/16/2016-04-16-string-algorithm/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">字符串算法问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/04/30/2016-04-30-sort-algorithm/">
+        <span class="next-text nav-default">排序</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/23/2016-04-23-array-algorithm/"
+           data-title="数组算法问题" data-url="http://yoursite.com/2016/04/23/2016-04-23-array-algorithm/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

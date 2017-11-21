@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Kernel SVM"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/19/2016-08-19-hard-margin-svm3-ml/"/>
+
+
+<meta name="description" content="开始Hard Margin svm的第三篇博文，主要讲非线性数据的svm以及维度爆炸的问题以及常见的kernel．$ $">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kernel SVM">
+<meta property="og:url" content="http://yoursite.com/2016/08/19/2016-08-19-hard-margin-svm3-ml/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="开始Hard Margin svm的第三篇博文，主要讲非线性数据的svm以及维度爆炸的问题以及常见的kernel．$ $">
+<meta property="og:updated_time" content="2017-04-17T05:20:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kernel SVM">
+<meta name="twitter:description" content="开始Hard Margin svm的第三篇博文，主要讲非线性数据的svm以及维度爆炸的问题以及常见的kernel．$ $">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> Kernel SVM · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Kernel SVM
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 19, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#non-linear-svm"><span class="toc-text">non-linear svm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#kernel-function"><span class="toc-text">kernel function</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#polynomial-kernel"><span class="toc-text">Polynomial Kernel</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#gauassian-kernel"><span class="toc-text">Gauassian Kernel</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>开始Hard Margin svm的第三篇博文，主要讲非线性数据的svm以及维度爆炸的问题以及常见的kernel．$ $ <a id="more"></a></p>
+<h1 id="non-linear-svm">non-linear svm</h1>
+<p>以前写过二次分类的问题，svm的非线性分类其实用的是同样的思想．假设在二维平面上有两个特征<span class="math">\(X1,X2\)</span>,但是我们要表示二次曲线的话，那么我们必然要对应到五维空间<span class="math">\(X1,X2,X1^2,X1X2,X2^2\)</span>.<strong>更严重的是，当空间维度上升时，映射后的空间爆炸式增加</strong>,那么我们在利用svm求内积时就很困难了．</p>
+<h1 id="kernel-function">kernel function</h1>
+<p>假设有d维空间</p>
+<p><span class="math">\[
+x=(x_{1},x_{2},\ldots,x_{d})
+\]</span></p>
+<p>将其做二次映射<span class="math">\(\Phi_{2}(x)\)</span>,得到</p>
+<p><span class="math">\[
+\Phi_{2}(x)=(1,x_{1},x_{2},\ldots,x_{d},x_{1}^{2},x_{1}x_{2},\ldots,x_{1}x_{d},x_{2}^{2},x_{2}x_{3},\ldots,x_{2}x_{d},\ldots,x_{d}^{2})
+\]</span></p>
+<p>内积为：</p>
+<p><span class="math">\[
+\begin{align}
+\Phi_{2}(x)^{T}\Phi_{2}(x^{&#39;})&amp;=1+\sum_{i=1}^{d}x_{i}x^{&#39;}_{i}+\sum_{i=1}^{d}\sum_{j=1}^{d}x_{i}x_{j}x^{&#39;}_{i}x^{&#39;}_{j}\\
+&amp;=1+\sum_{i=1}^{d}x_{i}x^{&#39;}_{i}+\sum_{i=1}^{d}x_{i}x^{&#39;}_{i}\sum_{j=1}^{d}x_{j}x^{&#39;}_{j}\\
+&amp;=1+x^{T}x^{&#39;}+(x^{T}x^{&#39;})(x^{T}x^{&#39;})
+\end{align}
+\]</span></p>
+<p>显然，我们不需要在高维度显示的计算内积，只需要在低维度计算就好了，我们将能实现这种转换的函数称为<strong>kernel function</strong></p>
+<h1 id="polynomial-kernel">Polynomial Kernel</h1>
+<p>上面只是举例说明一下，其实它有更加一般的表达式，我们称它为<strong>多项式核</strong></p>
+<p><span class="math">\[
+K_{Q}(x,x^{&#39;})=(\zeta+\gamma x^{T}x^{&#39;})^{Q}\\
+\zeta\geqslant0,\gamma\geqslant 0
+\]</span></p>
+<p>Q代表几次多项式，<span class="math">\(\zeta,\gamma\)</span>都是缩放因子</p>
+<p><span class="math">\[
+\begin{align}
+K_{1}(x,x^{&#39;})&amp;=(0+1\cdot x^{T}x^{&#39;})^{1}\\
+&amp;\vdots\\
+K_{Q}(x,x^{&#39;})&amp;=(\zeta+\gamma x^{T}x^{&#39;})^{Q}
+\end{align}
+\]</span></p>
+<p>首先，解释一下<span class="math">\(\zeta,\gamma,Q\)</span>. 其实这个kernel是代表<strong>margin(距离)</strong>的，<span class="math">\(\zeta\)</span>代表映射后乘以的系数，<span class="math">\(\gamma\)</span>代表margin的缩放系数,<span class="math">\(Q\)</span>代表进行了几次方的映射.</p>
+<p>这儿我想说一下映射后的维度为:</p>
+<p><span class="math">\[
+\begin{pmatrix}
+n+Q\\
+Q
+\end{pmatrix}
+\]</span></p>
+<h1 id="gauassian-kernel">Gauassian Kernel</h1>
+<p>这是一个特别的核，因为它可以映射到<strong>无穷维空间</strong>,主要是利用了<strong>泰勒展开</strong>,下面是其中一个<strong>高斯核</strong>(也叫做径向基函数(<strong>Radial Basis Function,简称RBF</strong>))的逆推过程:</p>
+<p><span class="math">\[
+\begin{align}
+K(x,x^{&#39;})&amp;=e^{-(x-x^{&#39;})^{2}}\\
+&amp;=e^{-(x)^{2}}e^{-(x^{&#39;})^{2}}e^{(2xx^{&#39;})}\\
+&amp;\mathop{}_{=}^{Taylor}e^{-(x)^{2}}e^{-(x^{&#39;})^{2}}(\sum_{i=0}^{\infty }\frac{(2xx^{&#39;})^{i}}{i!})\\
+&amp;=\sum_{i=0}^{\infty }(e^{-(x)^{2}}e^{-(x^{&#39;})^{2}}\sqrt{\frac{2^{i}}{i!}}\sqrt{\frac{2^{i}}{i!}}(x)^{i}(x^{&#39;})^{i})\\
+&amp;=\Phi (x)^{T}\Phi(x^{&#39;})\\\\
+其中:\\
+&amp;\Phi (x)=e^{-(x^{2})}\cdot(1,\sqrt{\frac{2^{1}}{1!}}x,\sqrt{\frac{2^{2}}{2!}}x^{2},\ldots)
+\end{align}
+\]</span></p>
+<p>高斯核更一般的形式:</p>
+<p><span class="math">\[
+K(x,x^{&#39;})=e^{-\gamma(x-x^{&#39;})^{2}}\\
+\gamma=\frac{1}{2\sigma^{2}}\\
+with \quad \gamma&gt;0
+\]</span></p>
+<p>相对于多项式核，高斯核只需要选择一个参数<span class="math">\(\gamma\)</span>. <strong><span class="math">\(\gamma\)</span>越大，<span class="math">\(\sigma\)</span>越小，高斯函数很高很廋，会造成只作用于支持向量样本附近，容易过拟合</strong></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/18/2016-08-18-hard-margin-svm2-ml/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Dual SVM</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/20/2016-08-20-soft-margin-svm-ml/">
+        <span class="next-text nav-default">Soft-margin SVM</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/19/2016-08-19-hard-margin-svm3-ml/"
+           data-title="Kernel SVM" data-url="http://yoursite.com/2016/08/19/2016-08-19-hard-margin-svm3-ml/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

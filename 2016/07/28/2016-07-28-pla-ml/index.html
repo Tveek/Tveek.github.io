@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="感知学习算法"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/07/28/2016-07-28-pla-ml/"/>
+
+
+<meta name="description" content="最近在看台大林轩田老师的课，这个感知学习算法(Perception Learning Algorithm)有点意思，好像也是现在比较火的深度学习的起源点，下面就来说一下我自己的理解． $ $">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="感知学习算法">
+<meta property="og:url" content="http://yoursite.com/2016/07/28/2016-07-28-pla-ml/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="最近在看台大林轩田老师的课，这个感知学习算法(Perception Learning Algorithm)有点意思，好像也是现在比较火的深度学习的起源点，下面就来说一下我自己的理解． $ $">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/point_matplot.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/navie_pla.png">
+<meta property="og:image" content="http://o6fdahi3n.bkt.clouddn.com/pocket_pla1.png">
+<meta property="og:updated_time" content="2017-04-17T05:17:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="感知学习算法">
+<meta name="twitter:description" content="最近在看台大林轩田老师的课，这个感知学习算法(Perception Learning Algorithm)有点意思，好像也是现在比较火的深度学习的起源点，下面就来说一下我自己的理解． $ $">
+<meta name="twitter:image" content="http://o6fdahi3n.bkt.clouddn.com/point_matplot.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 感知学习算法 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          感知学习算法
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Jul 28, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>最近在看台大林轩田老师的课，这个感知学习算法(Perception Learning Algorithm)有点意思，好像也是现在比较火的深度学习的起源点，下面就来说一下我自己的理解． $ $ <a id="more"></a></p>
+<h1 id="原理">原理</h1>
+<p>pla(Perceptron Learning Algorithm)是一种二分类得方法.根据数据是否线性可分该方法又分为navie pla 和pocket pla.其实这个东西和逻辑回归很相似.问题也很简单,假设我们有这两类点,如何用一条直线把它们分开<br></p>
+<p><img src="http://o6fdahi3n.bkt.clouddn.com/point_matplot.png" alt="point"><br> 我们看一下PLA是怎么做的吧:<br> 其实它就是拟合了如下方程:</p>
+<p><span class="math">\[
+h(x)=sign(\omega_{0}+\omega_{1}x_{1}+\omega_{2}x_{2})\\
+\\
+signx=\left\{\begin{matrix}
+-1&amp;  &amp;x&lt;0 \\
+ 0&amp;  &amp;x=0 \\
+ 1&amp;  &amp;x&gt;0
+\end{matrix}\right.
+\]</span></p>
+<p><strong>瞬间是不是回到逻辑回归了，就是映射函数不一样而已</strong><br> 这里想重点说一下它的迭代公式:</p>
+<p><span class="math">\[
+\omega_{t+1}\leftarrow \omega_{t}+y_{n(t)}x_{n(t)}
+\]</span></p>
+<p>以二维平面为例(该算法可以拓展到高维空间),<span class="math">\(\omega\)</span>代表<strong>分类直线</strong>(其实是与分类直线的法向量相关的向量),后面那一项也是一个向量(就是某个点以及分类标签构成的一个向量),<strong>两者相加</strong>其实就是使得分类直线<strong>朝着使得该点分类正确的方向旋转和平移</strong>.<br> 逻辑回归中我们是求偏导得到的迭代公式.<br></p>
+<p>想要知道更加详细的证明还是去看林老师的课吧<br> 这里说一下结论：<br> navie pla: 一定会收敛，使数据分开<br> pocket pla: 无法收敛，是个NP问题，只能求得相对好的分类结果<br></p>
+<h1 id="代码">代码</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding=utf8</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> random</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Perceptron</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.datas,self.lables=self.load_data()</div><div class="line">        self.num_samples,self.num_features=self.datas.shape</div><div class="line">        self.w=np.ones((self.num_features,<span class="number">1</span>))</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calculate_error</span><span class="params">(self,vector)</span>:</span></div><div class="line">        X=self.datas</div><div class="line">        y=self.lables</div><div class="line">        w=vector</div><div class="line">        N=self.num_samples</div><div class="line">        false_data=<span class="number">0</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,N):</div><div class="line">            <span class="keyword">if</span>(np.sign(np.dot(X[i,:],w))!=y[i][<span class="number">0</span>]):</div><div class="line">                false_data+=<span class="number">1</span></div><div class="line">        <span class="keyword">return</span> false_data</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment"># 数据线性可分</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">navie_pla</span><span class="params">(self)</span>:</span></div><div class="line">        X=self.datas</div><div class="line">        y=self.lables</div><div class="line">        w=self.w</div><div class="line">        N=self.num_samples</div><div class="line"></div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            false_data=<span class="number">0</span></div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,N):</div><div class="line"></div><div class="line">                <span class="keyword">if</span>(np.sign(np.dot(X[i,:],w))!=y[i][<span class="number">0</span>]):</div><div class="line">                    x=X[i,:].reshape(<span class="number">3</span>,<span class="number">1</span>)</div><div class="line">                    w+=y[i][<span class="number">0</span>]*x</div><div class="line">                    false_data+=<span class="number">1</span></div><div class="line">            <span class="keyword">if</span>(false_data==<span class="number">0</span>):</div><div class="line">                <span class="keyword">break</span></div><div class="line">        self.w=w</div><div class="line"></div><div class="line">    <span class="comment"># 数据有杂音,不完全线性可分</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pocket_pla</span><span class="params">(self,max_iter)</span>:</span></div><div class="line">        <span class="comment"># TODO</span></div><div class="line">        X=self.datas</div><div class="line">        y=self.lables</div><div class="line">        w=self.w</div><div class="line">        N=self.num_samples</div><div class="line">        false_data=self.calculate_error(w)</div><div class="line"></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,max_iter):</div><div class="line">            rand_sort = range(N)</div><div class="line">            rand_sort = random.sample(rand_sort,N)</div><div class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> rand_sort:</div><div class="line">                <span class="keyword">if</span>(np.sign(np.dot(X[j,:],w))!=y[j][<span class="number">0</span>]):</div><div class="line">                    x=X[j,:].reshape(<span class="number">3</span>,<span class="number">1</span>)</div><div class="line">                    tmp_w=w+<span class="number">0.01</span>*y[j][<span class="number">0</span>]*x</div><div class="line">                    tmp_false_data=self.calculate_error(tmp_w)</div><div class="line">                    <span class="comment"># print tmp_false_data</span></div><div class="line">                    <span class="keyword">if</span>(tmp_false_data&lt;=false_data):</div><div class="line">                        w=tmp_w</div><div class="line">                        false_data=tmp_false_data</div><div class="line">                        <span class="keyword">print</span> false_data</div><div class="line">                    <span class="keyword">break</span></div><div class="line">        <span class="keyword">print</span> false_data</div><div class="line">        self.w=w</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(self)</span>:</span></div><div class="line">        data=np.loadtxt(<span class="string">'pla_nonlinear_data.txt'</span>)</div><div class="line">        <span class="comment"># data=np.loadtxt('pla_linear_data.txt')</span></div><div class="line">        points=data[:,:<span class="number">-1</span>]</div><div class="line">        lables=data[:,<span class="number">-1</span>:]</div><div class="line">        <span class="comment"># 在点中插入一列1</span></div><div class="line">        points=np.insert(points,<span class="number">0</span>,<span class="number">1</span>,axis=<span class="number">1</span>)</div><div class="line">        <span class="keyword">return</span> points, lables</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">plot2D</span><span class="params">(self)</span>:</span></div><div class="line">        xy=self.datas[:,<span class="number">1</span>:]</div><div class="line">        lable=self.lables</div><div class="line">        N=self.num_samples</div><div class="line"></div><div class="line">        <span class="comment"># 画点</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(N):</div><div class="line">            <span class="keyword">if</span> int(lable[i, <span class="number">0</span>]) == <span class="number">-1</span>:</div><div class="line">                plt.plot(xy[i, <span class="number">0</span>], xy[i, <span class="number">1</span>], <span class="string">'ro'</span>)</div><div class="line">            <span class="keyword">elif</span> int(lable[i, <span class="number">0</span>]) == <span class="number">1</span>:</div><div class="line">                plt.plot(xy[i, <span class="number">0</span>], xy[i, <span class="number">1</span>], <span class="string">'bo'</span>)</div><div class="line">        <span class="comment"># 画线</span></div><div class="line">        theta=self.w.reshape((<span class="number">3</span>,))</div><div class="line"></div><div class="line">        min_x = min(xy[:, <span class="number">0</span>])</div><div class="line">        max_x = max(xy[:, <span class="number">0</span>])</div><div class="line">        y_min_x = float(-theta[<span class="number">0</span>] - theta[<span class="number">1</span>] * min_x) / theta[<span class="number">2</span>]</div><div class="line">        y_max_x = float(-theta[<span class="number">0</span>] - theta[<span class="number">1</span>] * max_x) / theta[<span class="number">2</span>]</div><div class="line">        plt.plot([min_x, max_x], [y_min_x, y_max_x], <span class="string">'-g'</span>)</div><div class="line"></div><div class="line"></div><div class="line">        <span class="comment"># plt.axis([-6,6,-6,6])</span></div><div class="line">        plt.xlabel(<span class="string">'x'</span>); plt.ylabel(<span class="string">'y'</span>)</div><div class="line">        plt.show()</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    p=Perceptron()</div><div class="line">    p.pocket_pla(<span class="number">1000</span>)</div><div class="line">    <span class="comment"># p.navie_pla()</span></div><div class="line">    p.plot2D()</div></pre></td></tr></table></figure>
+
+<p>还是给出图形结果吧!<br> navie pla:<br></p>
+<div class="figure">
+<img src="http://o6fdahi3n.bkt.clouddn.com/navie_pla.png">
+</div>
+<p>pocket pla:<br></p>
+<div class="figure">
+<img src="http://o6fdahi3n.bkt.clouddn.com/pocket_pla1.png">
+</div>
+<p>对于线性可分的数据，navie pla 完全可以分类正确，不过对于非线性可分的数据，pocket pla并没有给我们找到最优的结果(黑色的线是最好的结果)．<br> <strong>还有就是navie pla与<span class="math">\(\omega\)</span>的初始值无关，但是pocket pla却有关，因为我把<span class="math">\(\omega\)</span>初始化为０，结果没有初始为１好</strong><br></p>
+<p>数据下载:<a href="http://pan.baidu.com/s/1bp2vMbH#path=%252FMatplotlib" target="_blank" rel="external">Data</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/07/28/2016-07-28-work-use-ubuntu/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Ubuntu日常应用技巧</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/02/2016-08-02-softmax-ml/">
+        <span class="next-text nav-default">softmax分类器</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/28/2016-07-28-pla-ml/"
+           data-title="感知学习算法" data-url="http://yoursite.com/2016/07/28/2016-07-28-pla-ml/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>

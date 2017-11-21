@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Caffe源码分析之运行流程"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/13/2016-10-13-source-analysis1-caffe/"/>
+
+
+<meta name="description" content="前几天跑了一个mnist的例子，今天开启源码分析之路．不过本系列不会拘泥于每一行代码，只是从总体框架出发，把源码理顺．第一篇博文就是为了理顺程序运行过程.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Caffe源码分析之运行流程">
+<meta property="og:url" content="http://yoursite.com/2016/10/13/2016-10-13-source-analysis1-caffe/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="前几天跑了一个mnist的例子，今天开启源码分析之路．不过本系列不会拘泥于每一行代码，只是从总体框架出发，把源码理顺．第一篇博文就是为了理顺程序运行过程.">
+<meta property="og:updated_time" content="2016-10-18T15:29:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Caffe源码分析之运行流程">
+<meta name="twitter:description" content="前几天跑了一个mnist的例子，今天开启源码分析之路．不过本系列不会拘泥于每一行代码，只是从总体框架出发，把源码理顺．第一篇博文就是为了理顺程序运行过程.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> Caffe源码分析之运行流程 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Caffe源码分析之运行流程
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 13, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#疑问"><span class="toc-text">疑问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solver的运行流程"><span class="toc-text">Solver的运行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#入口"><span class="toc-text">入口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#train函数"><span class="toc-text">train函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#solve函数"><span class="toc-text">Solve函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step函数"><span class="toc-text">Step函数</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>前几天跑了一个mnist的例子，今天开启源码分析之路．不过本系列不会拘泥于每一行代码，只是从总体框架出发，把源码理顺．第一篇博文就是为了理顺程序运行过程. <a id="more"></a></p>
+<h2 id="疑问">疑问</h2>
+<p>众所周知，caffe不需写代码，只要配置几个配置文档就可以运行程序，这对于程序员的我还是挺<strong>神奇</strong>的.<br> caffe使用C++写的，可以肯定caffe程序是c++程序，那么那些<strong>非C++</strong>配置文档又是怎么和C++代码融合的了?</p>
+<h2 id="solver的运行流程">Solver的运行流程</h2>
+<p><strong>声明:</strong>本篇只是在solver层面做整体流程分析，屏蔽Net,Layer,Blob层面的细节.<br> 对于上面的疑问，我们要从配置文档说起．其实它也是一种满足<strong>Google Protocol Buffer</strong>格式的代码,可以通过相应的工具将其转为C++.<strong>我们只不过是以一种简单的方式写代码而已.</strong><br></p>
+<h3 id="入口">入口</h3>
+<p>通常代码都有一个主程序入口，caffe也不例外．一切还得从下面这条语句说起:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./build/tools/caffe train -solver=examples/kaggle_mnist/lenet_solver.prototxt</div></pre></td></tr></table></figure></p>
+<p>显然这是一条<strong>命令行(Command Line)</strong>语句.通过查caffe官网关于Command Line 接口的说明，发现它有四种模式:train ,test ,time ,device_query.显然上面命令行中的train指代其中一种模式，后面的一长窜指<strong>命令行参数</strong>solver以及它的值.</p>
+<p>接下来就得分析<strong>caffe这条命令</strong>，它的源码就在<strong>caffe/tools/caffe.cpp</strong>里．下面是它的main函数:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</div><div class="line">  <span class="comment">// Print output to stderr (while still logging).</span></div><div class="line">  FLAGS_alsologtostderr = <span class="number">1</span>;</div><div class="line">  <span class="comment">// Set version</span></div><div class="line">  gflags::SetVersionString(AS_STRING(CAFFE_VERSION));</div><div class="line">  <span class="comment">// Usage message.</span></div><div class="line">  gflags::SetUsageMessage(<span class="string">"command line brew\n"</span></div><div class="line">      <span class="string">"usage: caffe &lt;command&gt; &lt;args&gt;\n\n"</span></div><div class="line">      <span class="string">"commands:\n"</span></div><div class="line">      <span class="string">"  train           train or finetune a model\n"</span></div><div class="line">      <span class="string">"  test            score a model\n"</span></div><div class="line">      <span class="string">"  device_query    show GPU diagnostic information\n"</span></div><div class="line">      <span class="string">"  time            benchmark model execution time"</span>);</div><div class="line">  <span class="comment">// Run tool or show usage.</span></div><div class="line">  caffe::GlobalInit(&amp;argc, &amp;argv);</div><div class="line">  <span class="keyword">if</span> (argc == <span class="number">2</span>) &#123;</div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_PYTHON_LAYER</span></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">      <span class="keyword">return</span> GetBrewFunction(caffe::<span class="built_in">string</span>(argv[<span class="number">1</span>]))();</div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_PYTHON_LAYER</span></div><div class="line">    &#125; <span class="keyword">catch</span> (bp::error_already_set) &#123;</div><div class="line">      PyErr_Print();</div><div class="line">      <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    gflags::ShowUsageWithFlagsRestrict(argv[<span class="number">0</span>], <span class="string">"tools/caffe"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先要对<strong>argc,argv</strong>有所了解:<br> argc是命令行总的参数个数<br> argv[]是argc个参数，其中第0个参数是程序的全名(即main)<br> argv[]剩余的参数是命令行后面用户输入的参数.</p>
+<p>对应本例<strong>argc=2,argv[0]=main,argv[1]=train</strong>.别急，还有一个solver参数，它是有<strong>gflags依赖库</strong>来解析的．在caffe.cpp中有很多类似下面代码的定义: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEFINE_string(solver, <span class="string">""</span>,<span class="string">"The solver definition protocol buffer text file."</span>);</div></pre></td></tr></table></figure></p>
+<p>其中，<strong>DEFINE_string</strong>是gflags中的函数，把solver解析成FLAGS_solver，其值为examples/kaggle_mnist/lenet_solver.prototxt.不过这都不是本节的重点.以上的解析工作都是在下面这条语句完成的:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">caffe::GlobalInit(&amp;argc, &amp;argv);</div></pre></td></tr></table></figure></p>
+<p>接下来就是重头戏，就是这条语句:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> GetBrewFunction(caffe::<span class="built_in">string</span>(argv[<span class="number">1</span>]))();</div></pre></td></tr></table></figure></p>
+<p>仔细看这条语句是执行一个<strong>函数</strong>,并返回．程序到此就结束了．瞬间这条函数重要性就突显出来了，因为前面分析的过程其实我们什么也没有做，那么这条函数就是核心代码了．</p>
+<p><strong>GetBrewFunction函数返回的是键值为argv[1]的map值</strong>,那么我们只要知道这个map是什么就好办了.</p>
+<p>仔细看源码,在main函数之前，有如下四条语句:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">RegisterBrewFunction(device_query);</div><div class="line">RegisterBrewFunction(train);</div><div class="line">RegisterBrewFunction(test);</div><div class="line">RegisterBrewFunction(time);</div></pre></td></tr></table></figure></p>
+<p>其中，RegisterBrewFunction是一个宏，定义了一个namespace，有一个类以及它的构造函数， 且构造函数里有一个<strong>全局map,map的key为string类型，value为与key同名的函数指针</strong>.</p>
+<p>由于上面的四条语句在main函数之前，<strong>那么他们相应的构造函数也在main之前执行了.</strong>也就是说进入main函数之前有map了.</p>
+<p>因此 GetBrewFunction(caffe::string(argv[1]))返回的就是argv[1],在本例中也就是train了.</p>
+<p><strong>我们重要找到那个重要的函数了，它就是train()</strong></p>
+<h2 id="train函数">train函数</h2>
+<p>其实train函数中也没有干核心的活，而是把它扔给了别人:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (gpus.size() &gt; <span class="number">1</span>) &#123;</div><div class="line">    caffe::P2PSync&lt;<span class="keyword">float</span>&gt; sync(solver, <span class="literal">NULL</span>, solver-&gt;param());</div><div class="line">    sync.Run(gpus);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    LOG(INFO) &lt;&lt; <span class="string">"Starting Optimization"</span>;</div><div class="line">    solver-&gt;Solve();</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>不过它也是干了一些活的，还记得前面说的<strong>solver的解析</strong>吗?它的主要工作就在这儿，<strong>就是把配置文档解析到一个SolverParameter</strong>.具体的过程这里就不写了.</p>
+<h2 id="solve函数">Solve函数</h2>
+<p>只考虑CPU-only的情况.问题就全归结到:<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">solver-&gt;Solve();</div></pre></td></tr></table></figure></p>
+<p>首先声明,caffe中有很多solver,那么到底执行哪一个，因为我们不可能在solver这个层面写具体是哪一个solver，否则我们就会对每一个solver实现一次执行的详细过程．<strong>其实解决的方法，train函数的生成是一样的，也是注册一个map,最后根据传进来的solver做映射</strong></p>
+<p>其实在solve函数里也没有做实质的工作，任务都扔给了step函数</p>
+<h2 id="step函数">Step函数</h2>
+<p>step函数则<strong>抽象的</strong>规划了整个迭代过程,做了<strong>前向计算</strong>.剩余的都扔给了<strong>具体用到的子solver的ApplyUpdate函数</strong>,也就是说这两个函数才是正真的核心.</p>
+<p>强力推荐一下两篇，作者写得很详细:</p>
+<p><a href="http://alanse7en.github.io/caffedai-ma-3/" target="_blank" rel="external">caffe 命令行接口源码分析</a></p>
+<p><a href="http://alanse7en.github.io/caffedai-ma-jie-xi-4/" target="_blank" rel="external">caffe solver相关源码分析</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/12/2016-10-12-stl-algorithm1-cpp/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">C++STL算法之简介</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/19/2016-10-19-source-analysis2-caffe/">
+        <span class="next-text nav-default">Caffe源码分析之Net</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/13/2016-10-13-source-analysis1-caffe/"
+           data-title="Caffe源码分析之运行流程" data-url="http://yoursite.com/2016/10/13/2016-10-13-source-analysis1-caffe/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

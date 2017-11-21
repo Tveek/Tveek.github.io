@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="C++STL算法之简介"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/12/2016-10-12-stl-algorithm1-cpp/"/>
+
+
+<meta name="description" content="算法无处不在，但是有些算法是通用的．比如排序，查找等．为了提高c++代码的利用率，STL专门写了algorithms这个模板．">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++STL算法之简介">
+<meta property="og:url" content="http://yoursite.com/2016/10/12/2016-10-12-stl-algorithm1-cpp/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="算法无处不在，但是有些算法是通用的．比如排序，查找等．为了提高c++代码的利用率，STL专门写了algorithms这个模板．">
+<meta property="og:updated_time" content="2016-10-12T11:09:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++STL算法之简介">
+<meta name="twitter:description" content="算法无处不在，但是有些算法是通用的．比如排序，查找等．为了提高c++代码的利用率，STL专门写了algorithms这个模板．">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> C++STL算法之简介 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          C++STL算法之简介
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 12, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#不修改内容的序列操作"><span class="toc-text">不修改内容的序列操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改内容的序列操作"><span class="toc-text">修改内容的序列操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#划分操作"><span class="toc-text">划分操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排序操作"><span class="toc-text">排序操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二分法查找操作"><span class="toc-text">二分法查找操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合操作"><span class="toc-text">集合操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#堆操作"><span class="toc-text">堆操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最大最小操作"><span class="toc-text">最大/最小操作</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>算法无处不在，但是有些算法是通用的．比如排序，查找等．为了提高c++代码的利用率，STL专门写了algorithms这个模板． <a id="more"></a></p>
+<h2 id="不修改内容的序列操作">不修改内容的序列操作</h2>
+<p>通常是各种<strong>find</strong>和<strong>search</strong>操作<br></p>
+<h2 id="修改内容的序列操作">修改内容的序列操作</h2>
+<p>通常是各种<strong>copy,move,remove,replace,reverse,swap</strong>等操作<br></p>
+<h2 id="划分操作">划分操作</h2>
+<p>按照某个函数，对容器的数据进行重新划分<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">IsOdd</span> <span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="keyword">return</span> (i%<span class="number">2</span>)==<span class="number">1</span>; &#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,7&gt; foo &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;;</div><div class="line"><span class="comment">// print contents:</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo:"</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span>&amp; x:foo)</div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">' '</span> &lt;&lt; x;</div><div class="line"></div><div class="line"><span class="keyword">if</span> ( <span class="built_in">std</span>::is_partitioned(foo.begin(),foo.end(),IsOdd) )</div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" (partitioned)\n"</span>;</div><div class="line"><span class="keyword">else</span></div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" (not partitioned)\n"</span>;</div><div class="line"></div><div class="line"><span class="comment">// partition array:</span></div><div class="line"><span class="built_in">std</span>::stable_partition(foo.begin(),foo.end(),IsOdd);</div><div class="line"></div><div class="line"><span class="comment">// print contents again:</span></div><div class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo:"</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span>&amp; x:foo)</div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">' '</span> &lt;&lt; x;</div><div class="line"></div><div class="line"><span class="keyword">if</span> ( <span class="built_in">std</span>::is_partitioned(foo.begin(),foo.end(),IsOdd) )</div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" (partitioned)\n"</span>;</div><div class="line"><span class="keyword">else</span></div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" (not partitioned)\n"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="排序操作">排序操作</h2>
+<p>各种<strong>sort</strong>操作<br></p>
+<h2 id="二分法查找操作">二分法查找操作</h2>
+<p>各种<strong>search</strong>操作<br></p>
+<h2 id="集合操作">集合操作</h2>
+<p>求<strong>交集，并集，补集等</strong><br></p>
+<h2 id="堆操作">堆操作</h2>
+<p>其实就是一个堆排序．</p>
+<h2 id="最大最小操作">最大/最小操作</h2>
+<p>一堆<strong>max,min</strong>函数．</p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/12/2016-10-12-stl-iterator-cpp/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">C++STL迭代器之简介</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/13/2016-10-13-source-analysis1-caffe/">
+        <span class="next-text nav-default">Caffe源码分析之运行流程</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/12/2016-10-12-stl-algorithm1-cpp/"
+           data-title="C++STL算法之简介" data-url="http://yoursite.com/2016/10/12/2016-10-12-stl-algorithm1-cpp/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

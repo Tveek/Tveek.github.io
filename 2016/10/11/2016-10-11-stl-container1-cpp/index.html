@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="C++STL容器之简介"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/11/2016-10-11-stl-container1-cpp/"/>
+
+
+<meta name="description" content="用C++编程，肯定会用到STL库，因为我们不希望重复的造轮子．本篇博客主要梳理一下STL中的容器以及个人的小小见解．">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++STL容器之简介">
+<meta property="og:url" content="http://yoursite.com/2016/10/11/2016-10-11-stl-container1-cpp/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="用C++编程，肯定会用到STL库，因为我们不希望重复的造轮子．本篇博客主要梳理一下STL中的容器以及个人的小小见解．">
+<meta property="og:updated_time" content="2017-04-17T05:26:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++STL容器之简介">
+<meta name="twitter:description" content="用C++编程，肯定会用到STL库，因为我们不希望重复的造轮子．本篇博客主要梳理一下STL中的容器以及个人的小小见解．">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> C++STL容器之简介 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          C++STL容器之简介
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 11, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vector"><span class="toc-text">vector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deque"><span class="toc-text">deque</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map"><span class="toc-text">map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pair"><span class="toc-text">pair</span></a></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>用C++编程，肯定会用到STL库，因为我们不希望重复的造轮子．本篇博客主要梳理一下STL中的容器以及个人的小小见解． <a id="more"></a></p>
+<h2 id="vector">vector</h2>
+<p>毋庸置疑，vector是使用最频繁的STL容器.其实它相当于是<strong>数组</strong>.只是这个数组可以<strong>不同时</strong>装不同类型的数据和对象.<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</div><div class="line"><span class="comment">// 经典数组使用方式</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;vec.size();++i)</div><div class="line">    <span class="built_in">cout</span>&lt;&lt;vec[i]&lt;&lt;<span class="built_in">endl</span>;</div></pre></td></tr></table></figure></p>
+<p>不过，单单将其想为数组，人家还有类似堆栈的操作<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vec.push_back(<span class="number">4</span>);</div><div class="line">vec.pop_back();</div></pre></td></tr></table></figure></p>
+<h2 id="list">list</h2>
+<p>在STL中，list表示的是<strong>双端链表</strong>.自然需要链表这种数据结构是就该用它．<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 双端链表，两端都可以取值</span></div><div class="line"><span class="built_in">cout</span>&lt;&lt;mylist.front()&lt;&lt;<span class="built_in">endl</span>;</div><div class="line"><span class="built_in">cout</span>&lt;&lt;mylist.back()&lt;&lt;<span class="built_in">endl</span>;</div><div class="line"><span class="comment">// 插入数据,需要先指定一个迭代器表示插入位置</span></div><div class="line"><span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it=mylist.begin();</div><div class="line">it++;</div><div class="line">mylist.insert(it,<span class="number">4</span>);</div></pre></td></tr></table></figure></p>
+<h2 id="deque">deque</h2>
+<p>其实看到这个名字就大概猜测到是<strong>双端队列</strong>.注意队列有<strong>FIFO</strong>特性.<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; q=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</div><div class="line"><span class="comment">// 从前端出队列</span></div><div class="line">q.pop_front();</div><div class="line"><span class="comment">//　从后端出队列</span></div><div class="line">q.pop_back();</div><div class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> i:q)</div><div class="line">  <span class="built_in">cout</span>&lt;&lt;i&lt;&lt;<span class="built_in">endl</span>;</div></pre></td></tr></table></figure></p>
+<h2 id="set">set</h2>
+<p>这个家伙代表的是<strong>集合</strong>,自然会联想到数学中的集合．没错这哥们通过调用算法，有<strong>并集，补集等</strong>集合运算的功能.<strong>注意这家伙是关联式容器，不能有重复元素，有序.</strong><br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; myset1=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">4</span>&#125;;</div><div class="line"><span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; myset2=&#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>&#125;;</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec(<span class="number">10</span>);</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator it;</div><div class="line"><span class="comment">// 并集运算函数</span></div><div class="line">it=set_union(myset1.begin(),myset1.end(),myset2.begin(),myset2.end(),vec.begin());</div><div class="line"><span class="comment">// 删除vec中多余的数据</span></div><div class="line">vec.resize(it-vec.begin());</div><div class="line"><span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; myset3(vec.begin(),vec.end());</div><div class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> i:myset3)</div><div class="line">  <span class="built_in">cout</span>&lt;&lt;<span class="string">" "</span>&lt;&lt;i;</div><div class="line"><span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</div></pre></td></tr></table></figure></p>
+<h2 id="map">map</h2>
+<p>我们可以把它当做<strong>映射</strong>，即<strong>key-value</strong>形式.它也是关联式容器，key值唯一,有序．<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 这里用pair初始化了</span></div><div class="line"><span class="built_in">map</span>&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt; m = &#123;</div><div class="line">            <span class="built_in">std</span>::make_pair(<span class="number">0</span>, <span class="string">"zero"</span>), <span class="built_in">std</span>::make_pair(<span class="number">1</span>, <span class="string">"one"</span>), <span class="built_in">std</span>::make_pair(<span class="number">2</span>, <span class="string">"two"</span>)</div><div class="line">    &#125;;</div><div class="line"><span class="keyword">int</span> key = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : m) &#123;</div><div class="line">    <span class="keyword">if</span> (i.second == <span class="string">"two"</span>) &#123;</div><div class="line">        key = i.first;</div><div class="line">        <span class="keyword">break</span>; <span class="comment">// to stop searching</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">cout</span> &lt;&lt; key &lt;&lt; <span class="built_in">endl</span>;</div></pre></td></tr></table></figure></p>
+<h2 id="pair">pair</h2>
+<p>它叫做<strong>对</strong>,于map最大的区别就是它只能表示一对元素．它通常在如下两个应用场景使用:<br> 1.map中捆绑一对元素.<br> 2.当函数有两个返回值时.<br></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/10/2016-10-10-kaggle_mnist-caffe/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">利用Caffe中的Lenet训练kaggle上手写体数据集</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/11/2016-10-11-stl-container2-cpp/">
+        <span class="next-text nav-default">C++STL容器之数据结构</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/11/2016-10-11-stl-container1-cpp/"
+           data-title="C++STL容器之简介" data-url="http://yoursite.com/2016/10/11/2016-10-11-stl-container1-cpp/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Caffe源码分析之Net"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/19/2016-10-19-source-analysis2-caffe/"/>
+
+
+<meta name="description" content="前面在solver的层面把caffe的整体运行流程梳理了一遍．今天接着来梳理Net部分.">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Caffe源码分析之Net">
+<meta property="og:url" content="http://yoursite.com/2016/10/19/2016-10-19-source-analysis2-caffe/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="前面在solver的层面把caffe的整体运行流程梳理了一遍．今天接着来梳理Net部分.">
+<meta property="og:updated_time" content="2017-04-17T05:28:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Caffe源码分析之Net">
+<meta name="twitter:description" content="前面在solver的层面把caffe的整体运行流程梳理了一遍．今天接着来梳理Net部分.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> Caffe源码分析之Net · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Caffe源码分析之Net
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Oct 19, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#net的入口"><span class="toc-text">Net的入口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netinit"><span class="toc-text">Net::Init()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络参数预处理"><span class="toc-text">网络参数预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络构造"><span class="toc-text">网络构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络参数后处理"><span class="toc-text">网络参数后处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#net的其他函数"><span class="toc-text">Net的其他函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#forward和backward相关函数"><span class="toc-text">Forward和Backward相关函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剩余函数"><span class="toc-text">剩余函数</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>前面在solver的层面把caffe的整体运行流程梳理了一遍．今天接着来梳理Net部分. <a id="more"></a></p>
+<h2 id="net的入口">Net的入口</h2>
+<p>说Net的入口，自然要从solver说起．在solver.cpp找你可以找到如下清晰的流程:<br> Solver()构造函数  -&gt;  Init(param)  -&gt;  InitTrainNet()  -&gt;  net_.reset(new Net<dtype>(net_param))</dtype></p>
+<h2 id="netinit">Net::Init()</h2>
+<p>通过Net入口,就开始构造net了．而Net的构造函数里最重要的就是<strong>Init(param)</strong>.下面详细说一下它干了什么活.</p>
+<h3 id="网络参数预处理">网络参数预处理</h3>
+<p>重要通过以下两个函数:</p>
+<p><strong>FilterNet(in_param, &amp;filtered_param)</strong>: 过滤*.prototxt文件中不符合规则的层.</p>
+<p><strong>InsertSplits(filtered_param, &amp;param)</strong>: 当下一层有两个网络时，把当前层分裂成两份．</p>
+<h3 id="网络构造">网络构造</h3>
+<p>这里就是Init函数的主体代码.</p>
+<p>for<br>  CreateLayer(layer_param)． 构成一层．<br>  AppendBottom()构造每层输入blob<br>  AppendTop(()构造每层输出blob<br>  SetUp()为上面的blob分配内存<br>  AppendParam()初始化网络<strong>权重</strong>(weights)<br>  粗略设置backward flag</p>
+<p>以上for循环创建了各层网络，并分配数据以及连接起来，构成整个网络<br> <strong>层与层的连接是怎么实现的:每一层的Bottom blob其实就是一个指针，指向上一层的Top blob(它才是真正分配了内存),因此连接起来了．</strong><br></p>
+<h3 id="网络参数后处理">网络参数后处理</h3>
+<p>修正backward设置，例如有些对loss没影响的输入无需反向求导.<br> 构建map,以供solver选择.<br> <strong>共享权重</strong>处理</p>
+<h2 id="net的其他函数">Net的其他函数</h2>
+<p>主要是net.cpp中的一些函数，由于caffe更新频繁，不保证一下函数不同版本都有.</p>
+<h3 id="forward和backward相关函数">Forward和Backward相关函数</h3>
+<p>这里以Forward为例,主要有如下函数:<br> ForwardFromTo(): 从某层到另一层进行前向运算<br> ForwardFrom(): 从某层到网络结束进行前向运算<br> ForwardTo(): 从网络最开始到某层进行前向运算<br> Forward(): 从网络开始到网络结束进行前向运算<br> <strong>注意:这些函数只是调用layer的forward运算</strong></p>
+<h3 id="剩余函数">剩余函数</h3>
+<p>大多是layer,blob整体的操作，也都不涉及具体实现,已经数据转换操作．例如：各种CopyTrainedLayers函数,ToProto,ToHDF5,has_blob等等</p>
+<p>强力推荐以下博文:<br> <a href="http://blog.csdn.net/mrhiuser/article/details/52345469" target="_blank" rel="external">caffe::net::init()函数代码详细注解</a><br> <a href="http://blog.csdn.net/langb2014/article/details/50987593" target="_blank" rel="external">caffe net.cpp梳理</a><br> <a href="http://46aae4d1e2371e4aa769798941cef698.devproxy.yunshipei.com/liyaohhh/article/details/51971650" target="_blank" rel="external">caffe Net 框图</a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/13/2016-10-13-source-analysis1-caffe/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Caffe源码分析之运行流程</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/19/2016-10-19-source-analysis2-caffe/"
+           data-title="Caffe源码分析之Net" data-url="http://yoursite.com/2016/10/19/2016-10-19-source-analysis2-caffe/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>

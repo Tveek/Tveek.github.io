@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="理解C++的编译过程"/>
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.3.x" />
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/08/28/2016-08-28-cppcompile-cpp/"/>
+
+
+<meta name="description" content="接触C++其实已经很久了，今天开始从编译流程来聊聊，开启我的第一篇C++博文">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解C++的编译过程">
+<meta property="og:url" content="http://yoursite.com/2016/08/28/2016-08-28-cppcompile-cpp/index.html">
+<meta property="og:site_name" content="Note">
+<meta property="og:description" content="接触C++其实已经很久了，今天开始从编译流程来聊聊，开启我的第一篇C++博文">
+<meta property="og:updated_time" content="2016-08-28T12:31:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解C++的编译过程">
+<meta name="twitter:description" content="接触C++其实已经很久了，今天开始从编译流程来聊聊，开启我的第一篇C++博文">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.3.x" />
+
+
+
+
+
+
+
+<script>
+  var CONFIG = {
+    search: false,
+    searchPath: "/search.xml",
+    fancybox: false,
+    toc: true,
+  }
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?8466adbc25665cf7ee1a15e4fcb73643";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74273646-1', 'auto');
+        ga('send', 'pageview');
+  </script>
+
+
+
+    <title> 理解C++的编译过程 · Note </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Note</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            Home
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            Archives
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            Categories
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Note</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              Home
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              Archives
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              Categories
+            
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          理解C++的编译过程
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          Aug 28, 2016
+        </span>
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ide"><span class="toc-text">IDE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c编译流程"><span class="toc-text">C++编译流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#预处理"><span class="toc-text">预处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编译阶段"><span class="toc-text">编译阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成目标代码"><span class="toc-text">生成目标代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链接"><span class="toc-text">链接</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+    <div class="post-content">
+      
+        <p>接触C++其实已经很久了，今天开始从编译流程来聊聊，开启我的第一篇C++博文 <a id="more"></a></p>
+<h1 id="ide">IDE</h1>
+<p>我相信很多人写的第一个C语言程序是用VC++6.0,其实它就是一个IDE(Integrated Development Environment)，中文名叫集成开发环境,它诞生的目的是减轻程序员的负担．但是它屏蔽了很多操作，有时候让程序员不知所云．<strong>最常见的就是，利用IDE创建一个项目时，一开始就莫名的生成了一堆文件</strong>.</p>
+<h1 id="c编译流程">C++编译流程</h1>
+<p>首先，在同一个文件夹下创建两个文件<strong>a.cpp和a.h</strong>.它们的代码分别是: <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"a.h"</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">   <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">int</span> global;</div></pre></td></tr></table></figure>
+
+<p>接下来就是，整个编译过程</p>
+<h2 id="预处理">预处理</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ -E a.cpp -o a.ii</div></pre></td></tr></table></figure>
+
+<p>之后我们得到的a.ii文件为: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># 1 &quot;a.cpp&quot;</div><div class="line"># 1 &quot;&lt;built-in&gt;&quot;</div><div class="line"># 1 &quot;&lt;command-line&gt;&quot;</div><div class="line"># 1 &quot;/usr/include/stdc-predef.h&quot; 1 3 4</div><div class="line"># 1 &quot;&lt;command-line&gt;&quot; 2</div><div class="line"># 1 &quot;a.cpp&quot;</div><div class="line"># 1 &quot;a.h&quot; 1</div><div class="line">void fun();</div><div class="line">int global;</div><div class="line"># 2 &quot;a.cpp&quot; 2</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">   return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面代码的<strong>#号</strong>是注释,那么我们发现<strong>预处理就是把#inlcude “a.h”的文件换成a.h中的代码</strong></p>
+<h2 id="编译阶段">编译阶段</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ -S a.ii -o a.s</div></pre></td></tr></table></figure>
+
+<p>之后我们得到的a.s文件为: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">	.file	&quot;a.cpp&quot;</div><div class="line">	.globl	global</div><div class="line">	.bss</div><div class="line">	.align 4</div><div class="line">	.type	global, @object</div><div class="line">	.size	global, 4</div><div class="line">global:</div><div class="line">	.zero	4</div><div class="line">	.text</div><div class="line">	.globl	main</div><div class="line">	.type	main, @function</div><div class="line">main:</div><div class="line">.LFB0:</div><div class="line">	.cfi_startproc</div><div class="line">	pushq	%rbp</div><div class="line">	.cfi_def_cfa_offset 16</div><div class="line">	.cfi_offset 6, -16</div><div class="line">	movq	%rsp, %rbp</div><div class="line">	.cfi_def_cfa_register 6</div><div class="line">	movl	$0, %eax</div><div class="line">	popq	%rbp</div><div class="line">	.cfi_def_cfa 7, 8</div><div class="line">	ret</div><div class="line">	.cfi_endproc</div><div class="line">.LFE0:</div><div class="line">	.size	main, .-main</div><div class="line">	.ident	&quot;GCC: (Ubuntu 4.8.4-2ubuntu1~14.04.3) 4.8.4&quot;</div><div class="line">	.section	.note.GNU-stack,&quot;&quot;,@progbits</div></pre></td></tr></table></figure></p>
+<p>学过汇编的人应该知道这就是汇编代码</p>
+<h2 id="生成目标代码">生成目标代码</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ -c a.s -o a.o</div></pre></td></tr></table></figure>
+
+<p>结果是一堆只有机器可以看懂的<strong>机器代码</strong></p>
+<h2 id="链接">链接</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ a.o -o a.out</div></pre></td></tr></table></figure>
+
+<p><strong>得到的a.out就是最后的可执行程序</strong></p>
+<p>另外补充一下，其实用一句代码就可以实现上面的过程以及保留相应的文件，我上面所做的只是为了说明一下这个过程: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">g++ a.cpp --save-temps</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/08/27/2016-08-27-octopress-hexo-learning-experience/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Octopress迁移到Hexo</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/08/29/2016-08-29-errorstudy1-cpp/">
+        <span class="next-text nav-default">C++错误学习之类和对象</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/28/2016-08-28-cppcompile-cpp/"
+           data-title="理解C++的编译过程" data-url="http://yoursite.com/2016/08/28/2016-08-28-cppcompile-cpp/">
+      </div>
+    
+  </div>
+
+
+        </div>  
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:algoreek@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/tveek" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://www.zhihu.com/people/tveek/activities" class="iconfont icon-zhihu" title="zhihu"></a>
+        
+      
+    
+      
+    
+    
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+  </span>
+  
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2015 - 
+    
+    2017
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Tveek</span>
+  </span>
+</div>
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"tanpan123"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+  
+  
+
+
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.3.x"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=2.3.x"></script>
+
+    
+    1<!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  </body>
+</html>
